@@ -1,0 +1,38 @@
+<div class="container-fluid" ng-init="initCalendar()">
+	<div class="row">
+		<div class="container-fluid">
+			<h1 class="display-4 main-color-text hub-title-border">{{hubName}}'s Hub</h1>
+		</div>
+	</div>
+	<div class="row top-buffer-25">
+		<div class="col-lg-4 col-md-12 col-xs-12 text-center" >
+			<div class="card hub-card" ng-click="goToList()">
+				<span class="fa fa-gifts hub-card-icon"></span>
+				<div class="card-body hub-card-body">
+					<p class="card-text main-color-text"><b>My List</b></p>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-xs-12 text-center">
+			<div class="card hub-card" ng-click="goToGroups()">
+				<span class="fa fa-users hub-card-icon"></span>
+				<div class="card-body hub-card-body">
+					<p class="card-text main-color-text"><b>My Groups</b></p>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-4 col-md-6 col-xs-12 text-center">
+			<div class="card hub-card" ng-click="createGroup()">
+				<span class="fa fa-user-tag hub-card-icon"></span>
+				<div class="card-body hub-card-body">
+					<p class="card-text main-color-text"><b>Create Group</b></p>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="row top-buffer-50">
+		<div class="container">
+			<div ui-calendar ng-model="eventSources"></div>
+		</div>
+	</div>  
+</div>

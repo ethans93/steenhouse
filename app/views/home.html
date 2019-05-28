@@ -1,0 +1,37 @@
+<div class="container-fluid" data-ng-init="makeAlbum()">
+  <div class="row justify-content-center top-buffer-50">
+    <img src="images/steenhouse-logo-D-128.png">
+  </div>
+  <div class="row justify-content-center top-buffer-50">
+    <div class="col-12 text-center">
+      <h1 class="display-4 main-color-text"><b>Welcome to the Steen House!</b></h1>
+    </div>
+  </div>
+  <div class="row top-buffer-100">
+    <div class="jumbotron jumbotron-fluid main-color-bg">
+      <div class="col-lg-8 offset-lg-2 col-sm-12">
+        <blockquote class="blockquote text-center white-text">
+          <p class="mb-0">This site is meant to be a gathering place for members and friends of the Steens.  Users can create wishlists, for holidays and birthdays, for others in their group to see.  People can 'claim' things on your wishlist signifying they plan on getting you that for whatever occasion.  These 'claims' will be invisible to you to not ruin the surprise, but others can see it to prevent duplicates.</p>
+          <br>
+          <p class="mb-0">To sign up for the site, you'll first need to be invited by someone who is the owner of a group.  In the beginning there will only be one group, the Steen family, so Stu Jr. will be in charge of handing out the initial invites.  Once you're invited, feel free to create another group to invite your friends or other branches of the family.  Do keep in mind this site is targeted towards the Steens, but once it is more fleshed out a more generalized version will be made.</p>
+          <br>
+          <p class="mb-0">Since this website is a work in progress, the UI may be bare/ugly but will improve over time.  Also, there may be a little bit -- or a lot -- of bugs.  If you encounter any bugs, please email me describing the bug so I can try to replicate and fix it.  My email is ~ethanmcsteen@gmail.com~</p>
+          <br>
+          <footer class="blockquote-footer">
+            The Prodigal Son, <cite title="Ethan">Ethan</cite>
+          </footer>
+          <button type="button" ng-click="signUpModal()" class="btn btn-lg btn-neg-alt top-spacing-50">Sign Up</button>
+        </blockquote>
+      </div>
+    </div>
+  </div>  
+  <div class="row top-buffer-50 text-center justify-content-center">
+    <div class="container-fluid no-gutter">
+      <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides" ng-swipe-left="left()" ng-swipe-right="right()">
+        <div uib-slide ng-repeat="image in album track by image.id" index="image.id">
+          <img ng-src="{{image.src}}" style="max-width: 100%; max-height: 90vh;">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

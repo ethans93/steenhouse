@@ -1,0 +1,19 @@
+<div class="container-fluid" ng-init="groupsLoad()">
+	<div class="row">
+		<div class="container-fluid">
+			<h1 class="display-4 main-color-text hub-title-border">Groups</h1>
+		</div>
+	</div>
+	<div class="row justify-content-center">
+		<div class="col-md-8 col-xs-12">
+			<div class="card" ng-repeat="group in groups track by $index" style="border-radius: 15px; margin-top: 10px; margin-bottom: 10px;">
+  				<div class="card-header">
+    				<h1>{{group.prefix}}<span style="font-size: 1rem">%{{group.suffix}}</span></h1>
+  				</div>
+  				<div class="card-body">
+    				<p class="card-text text-right"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
+  				</div>
+			</div>
+		</div>
+	</div>
+</div>

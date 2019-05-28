@@ -1,0 +1,34 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title main-color-text">Create Group</h1>
+        <button type="button" class="close" aria-label="Close" ng-click="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">    
+        <form name="form" class="form-horizontal css-form" ng-submit="submit(group)" ng-keyup="$event.keyCode == 13 && submit(group)">
+            <div class="form-group">
+                <label for="name" class="main-color-text"><span class="fa fa-tag"></span> Name:</label>
+                <input required type="text" ng-model="group.name"  name="name" id="name" class="form-control" pattern="^(?=\s*\S).*$"  uib-tooltip="e.g. example@domain.com" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+            </div>
+            <div ng-show="form.$submitted || form.name.$touched">
+                <p ng-show="!form.name.$valid" class="input-form-warning">Name left blank</p>
+            </div>
+            <div class="form-group top-buffer-25">
+                <label for="res" class="main-color-text">Should only you be allowed to send out invites?</label>
+                
+            </div>
+            <div class="btn-group">
+                <label class="btn btn-aff" ng-model="group.restrict" uib-btn-radio="true">Yes</label>
+                <label class="btn btn-aff" ng-model="group.restrict" uib-btn-radio="false">No</label>
+            </div>
+            <div ng-show="resNull">
+                <p class="input-form-warning">Please select an option</p>
+            </div>        
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" ng-click="close()">Cancel</button>
+        <button type="button" class="btn btn-aff" ng-click="submit(group)">Create</button>
+    </div>
+</div>

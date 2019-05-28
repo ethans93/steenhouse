@@ -1,0 +1,37 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title main-color-text" id="exampleModalLabel">Sign In</h1>
+        <button type="button" class="close" aria-label="Close" ng-click="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">    
+        <form name="form" class="form-horizontal css-form" ng-submit="submit(signin)" ng-keyup="$event.keyCode == 13 && submit(signin)">
+            <div class="form-group">
+                <label for="email"><span class="fa fa-envelope main-color-text"></span> Email:</label>
+                <input required type="email" ng-model="signin.email"  name="email" id="email" class="form-control" pattern="^(.*\S.*)$">
+            </div>
+            <div ng-show="form.$submitted || form.email.$touched">
+                <p ng-show="!form.email.$valid" class="input-form-warning">Email left blank</p>
+            </div>
+            <div class="form-group">
+                <label for="pw"><span class="fa fa-lock main-color-text"></span> Password:</label>
+                <input required type="password" ng-model="signin.pw" name="pw" id="pw" class="form-control" pattern="^(.*\S.*)$">
+            </div>
+            <div ng-show="form.$submitted || form.pw.$touched">
+                <p ng-show="!form.pw.$valid" class="input-form-warning">Password left blank</p>
+            </div>
+            <div class="form-group top-buffer-25">
+                        <div class="row">
+                            <div class="col-12 text-center">
+                                <p class="main-color-text">Need an account? <span><a class="main-color-text" ng-click="switchToSignUp()" href="">Click Here</a></span></p>
+                            </div>
+                        </div>
+                    </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" ng-click="close()">Close</button>
+        <button type="button" class="btn btn-aff" ng-click="submit(signin)">Sign In</button>
+    </div>
+</div>
