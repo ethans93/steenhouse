@@ -81,7 +81,51 @@ let ServerCtrl = function ($http) {
             }).then( function successCallback(response) {
                 return response.data;
             }, function errorCallback(response) {
-                console.log("errorCallback " + response.data);
+                console.log("errorCallback " + response.data.message);
+                return response.data;
+            });
+        },
+        getList: function(){
+            return $http({
+                method: 'GET',
+                url: '/getList',
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }).then( function successCallback(response) {
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("errorCallback " + response.data.message);
+                return response.data;
+            });
+        },
+        addItem: function(item){
+            return $http({
+                method: 'POST',
+                url: '/addItem',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                data: item
+            }).then( function successCallback(response) {
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("errorCallback " + response.data.message);
+                return response.data;
+            });
+        },
+        removeItem: function(id){
+            return $http({
+                method: 'POST',
+                url: '/removeItem',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                data: id
+            }).then( function successCallback(response) {
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("errorCallback " + response.data.message);
                 return response.data;
             });
         }

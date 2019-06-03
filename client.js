@@ -1,14 +1,12 @@
 const launchFactory = require('./server/launch-factory');
 const _ = require('lodash');
-const { Pool, Client } = require('pg');
+const { Pool } = require('pg');
 const bcrypt = require('bcryptjs');
 const Cookie = require('cookie');
 const randomize = require('randomatic');
 const Salt = parseInt(process.env.SALT);
 const nodedir = require('node-dir');
 const jwt = require('jsonwebtoken');
-
-const EventEmitter = require('events');
 
 require('dotenv').config();
 
@@ -18,15 +16,14 @@ module.exports.createApp = function () {
 };
 
 function mountUrlEndpoints(app) {
-    console.log(randomize('A0', 10));
 
     app.get('/', function (req, res) {
         res.sendFile('dist/index.html', { root: __dirname });
     });
 
     const pool = new Pool();
-    const pgClient = new Client();
 
+    console.log(randomize('A0', 10));
     pool.on('error', (err, client) => {
       if(err.message === 'write after end'){
         console.error(new Date() + " - Idle pool timed out\n")
@@ -36,10 +33,12 @@ function mountUrlEndpoints(app) {
       }
     })
     pool.on('connect', (client) => {
+      console.log('\n')
       console.log("Pool Connected");
-    })
-    pool.on('removed', (client) => {
-      console.log("Removed");
+      console.log('Total: ', pool.totalCount);
+      console.log('Idle: ', pool.idleCount);
+      console.log('Waiting: ', pool.waitingCount);
+      console.log('\n')
     })
 
     app.post('/signup', function(request, result) {
@@ -190,7 +189,7 @@ function mountUrlEndpoints(app) {
               console.error(new Date() + "\nError connecting to database, create_group (function)\n" + err.stack + "\n");
               result.status(500).json({success: false, title: 'Error', message: 'Error on our end, the database is currently down. Try again later!'});
             }
-            var groupNameTrim = res.rows[0].create_group.split("%", 1)[0]
+            var groupNameTrim = res.rows[0].create_group.split("#", 1)[0]
             result.json({success: true, title: '', message: 'New group \"' + groupNameTrim + '\" was created!'});
           })
         } 
@@ -235,6 +234,104 @@ function mountUrlEndpoints(app) {
               client.release();
               console.error(new Date() + "\nError connecting to database, getGroups\n" + err.stack + "\n");
               result.status(500).json({success: false, title: 'Internal Server Error', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+    })
+
+    app.get('/getList', function(request, result) {
+      var userID;
+      var list = [];
+      var groups = [];
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({success: false, title: '', message: 'Session timed out. Please refresh page and log back in.'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryStringA = 'SELECT id, item_name, item_notes, link, public, groups_allowed, remove FROM public.users_list WHERE user_id = $1;';
+          var queryStringB = 'WITH _groups AS (SELECT group_id FROM public.groups_users WHERE user_id = $1 AND leave = false) SELECT id, name FROM public.groups WHERE id IN (SELECT group_id FROM _groups)';
+          client.query(queryStringA, [userID])
+            .then(res => {
+              list = res.rows;
+              client.query(queryStringB, [userID])
+                .then(res => {
+                  client.release();
+                  groups = res.rows;
+                  result.json({success: true, list: list, groups: groups})
+                })
+                .catch(err => {
+                  client.release();
+                  console.error(new Date() + "\nError connecting to database, getList\n" + err.stack + "\n");
+                  result.status(500).json({success: false, title: 'Internal Server Error', message: 'Error on our end, the database is currently down. Try again later!'});
+                })
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, getList\n" + err.stack + "\n");
+              result.status(500).json({success: false, title: 'Internal Server Error', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+
+    })
+
+    app.post('/addItem', function(request, result) {
+      var userID;
+      var item = request.body;
+      var groupsAllowed = [];
+      item.selected.forEach(function(obj) {
+        groupsAllowed.push(obj.id);
+      })
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({success: false, title: '', message: 'Session timed out. Please refresh page and log back in.'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryString = 'INSERT INTO public.users_list(user_id, item_name, item_notes, link, public, groups_allowed, remove) VALUES ($1, $2, $3, $4, $5, $6, $7);';
+          client.query(queryString, [userID, item.name, item.notes, item.link, item.public, groupsAllowed, false])
+            .then(res => {
+              client.release();
+              result.json({success: true, emit: 'refreshList', type: 'success', message: 'Item added!'})
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, addItem\n" + err.stack + "\n");
+              result.status(500).json({success: false, title: 'Internal Server Error', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+    })
+
+    app.post('/removeItem', function(request, result) {
+      var userID;
+      var itemID = request.body.id;
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({result: 'timeout', emit: 'refresh', type: 'info', message: 'Session timed out. Please refresh page and log back in.'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryString = 'DELETE FROM public.users_list WHERE id = $1 AND user_id = $2;';
+          client.query(queryString, [itemID, userID])
+            .then(res => {
+              client.release();
+              result.json({result: 'success', emit: 'refreshList', type: 'warning', message: 'Item removed'});
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, removeItem\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: 'refresh', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
             })
         })
     })

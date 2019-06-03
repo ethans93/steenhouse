@@ -18,6 +18,7 @@ let IndexCtrl           = require('../js/controllers/indexController.js'),
     SignInCtrl          = require('../js/controllers/signinController.js'),
     HubCtrl             = require('../js/controllers/hubController.js'),
     GroupsCtrl          = require('../js/controllers/groupsController.js'),
+    GroupCtrl          = require('../js/controllers/groupController.js'),
     ListCtrl            = require('../js/controllers/listController.js'),
 
     pwCheck				= require('../js/directives/pwCheck.js'),
@@ -37,7 +38,7 @@ app.config(function ($routeProvider, $httpProvider) {
    		.when("/home/signup", {templateUrl: "../views/signup.html", controller: "SignUpCtrl", restrictions: {restricted: false}})
         .when("/hub", {templateUrl: "../views/hub.html", controller: "HubCtrl", restrictions: {restricted: true}})
         .when("/hub/groups", {templateUrl: "../views/groups.html", controller: "GroupsCtrl", restrictions: {restricted: true}})
-        //.when("/hub/groups/:group", {templateUrl: "../views/group.html", controller: "GroupCtrl", restrictions: {restricted: true}})
+        .when("/hub/groups/:group!:groupid", {templateUrl: "../views/group.html", controller: "GroupCtrl", restrictions: {restricted: true}})
         .when("/hub/mylist", {templateUrl: "../views/list.html", controller: "ListCtrl", restrictions: {restricted: true}})
         //.when("/hub/account", {templateUrl: "../views/account.html", controller: "AccountCtrl", restrictions: {restricted: true}})
         .when("/hub/odin", {templateUrl: "../views/odin.html", controller: "OdinCtrl", restrictions: {restricted: true}})
@@ -50,7 +51,8 @@ app.controller("SignUpCtrl", ["$scope", "$location", "$window", "SessionCtrl", "
 app.controller("SignInCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ServerCtrl", SignInCtrl]);
 app.controller("HubCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ModalCtrls", HubCtrl]);
 app.controller("GroupsCtrl", ["$scope", "$location", "$window", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupsCtrl]);
-app.controller("ListCtrl", ["$scope", "$location", "$window", ListCtrl]);
+app.controller("GroupCtrl", ["$scope", "$location", "$window", "$routeParams", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupCtrl]);
+app.controller("ListCtrl", ["$rootScope", "$scope", "$location", "$window", "ServerCtrl", "ModalCtrls", "SessionCtrl", ListCtrl]);
 
 app.controller("OdinCtrl", ["$scope", "$location", "$window", "ServerCtrl", OdinCtrl]);
 //List

@@ -22,16 +22,15 @@
                 <p ng-show="!form.pw.$valid" class="input-form-warning">Password left blank</p>
             </div>
             <div class="form-group top-buffer-25">
-                        <div class="row">
-                            <div class="col-12 text-center">
-                                <p class="main-color-text">Need an account? <span><a class="main-color-text" ng-click="switchToSignUp()" href="">Click Here</a></span></p>
-                            </div>
-                        </div>
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <p class="main-color-text">Need an account? <span><a class="main-color-text" ng-click="switchToSignUp()" href="">Click Here</a></span></p>
                     </div>
+                </div>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-aff modal-btn">Sign In</button>
+            <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Close</button>       
         </form>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" ng-click="close()">Close</button>
-        <button type="button" class="btn btn-aff" ng-click="submit(signin)">Sign In</button>
     </div>
 </div>

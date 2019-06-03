@@ -6,6 +6,9 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
     $('#mainNav a').click(function () {
         $(".navbar-collapse").collapse('hide');
     });
+    $scope.collapse = function(){
+        $(".navbar-collapse").collapse('hide');
+    }
 
     $scope.$on('$locationChangeSuccess', function () {
         $scope.currentPage = $location.path();
@@ -28,6 +31,9 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
                 } 
             })
     });
+    $rootScope.$on('refresh', function() {
+        $route.reload();
+    })
 
     $scope.isSignedIn = function(){
         return SessionCtrl.isSignedIn();
@@ -38,6 +44,7 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
     }
 
     $scope.signout = function(){
+        $scope.collapse();
         SessionCtrl.signout();
         $location.path('/home');
     } 
@@ -51,20 +58,11 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
                 var st = $(this).scrollTop();
 
                 if (st > lastScrollTop) { 
-                    $navbar.fadeOut()
-      
-                    //$navbar.addClass("fade-out");
-                    //$navbar.removeClass("fade-in");
-                
-                    //$navbar.hide();
+                    $navbar.fadeOut();
+                    $scope.collapse();
                 } 
                 else {
-                    $navbar.fadeIn()
-      
-                    //$navbar.addClass("fade-in");
-                    //$navbar.removeClass("fade-out");
-      
-                    //$navbar.show();
+                    $navbar.fadeIn();
                 }
                 lastScrollTop = st;
             }
@@ -72,6 +70,7 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
     });
 
     $scope.signInModal = function(){
+        $scope.collapse();
         ModalCtrls.signIn();
     }
 

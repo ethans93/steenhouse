@@ -1,0 +1,52 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title main-color-text">Add Item</h1>
+        <button type="button" class="close" aria-label="Close" ng-click="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">    
+        <form name="form" class="form-horizontal css-form" ng-submit="submit(item)" ng-keyup="$event.keyCode == 13 && submit(item)">
+            <div class="form-group">
+                <label for="name"><span class="fa fa-tag main-color-text"></span> Name:</label>
+                <input required type="text" ng-model="item.name" name="name" id="name" class="form-control" pattern="^(?=\s*\S).*$"  uib-tooltip="Name of wishlist item" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+            </div>
+            <div ng-show="form.$submitted || form.name.$touched">
+                <p ng-show="!form.name.$valid" class="input-form-warning">Name invalid</p>
+            </div>
+            <div class="form-group">
+                <label for="notes"><span class="fa fa-clipboard main-color-text"></span> Notes:</label>
+                <textarea type="text" ng-model="item.notes" name="notes" id="notes" class="form-control" pattern="" uib-tooltip="" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip" rows="3"></textarea>
+            </div>
+            <div ng-show="form.$submitted || form.notes.$touched">
+                <p ng-show="!form.notes.$valid" class="input-form-warning">Notes invalid</p>
+            </div>
+            <div class="form-group">
+                <label for="link"><span class="fa fa-link main-color-text"></span> Link:</label>
+                <input required type="text" ng-model="item.link" name="link" id="link" class="form-control" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"  uib-tooltip="Link to item or to picture of item" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+            </div>
+            <div ng-show="form.$submitted || form.link.$touched">
+                <p ng-show="!form.link.$valid" class="input-form-warning">Link invalid</p>
+            </div>
+            <div class="form-group top-buffer-25">
+                <label for="public" class="main-color-text"><span class="fa fa-mask main-color-text"></span> Will this item be visible to all groups?</label>
+            </div>
+            <div class="btn-group">
+                <label class="btn btn-aff" ng-model="item.public" uib-btn-radio="true">Yes</label>
+                <label class="btn btn-aff" ng-model="item.public" uib-btn-radio="false">No</label>
+            </div>
+            <div ng-show="resNull">
+                <p class="input-form-warning">Please select an option</p>
+            </div>
+            <div class="form-group buffer-25" ng-if="item.public === false">
+                <label for="groups"><span class="fa fa-tasks main-color-text"></span> Select which groups can see it:</label>
+                <select ng-options="group as group.name for group in groupsTrim track by group.id" ng-model="item.selected" multiple class="form-control">
+                
+                </select>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-aff modal-btn">Add</button> 
+            <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Close</button>
+        </form>
+    </div>   
+</div>

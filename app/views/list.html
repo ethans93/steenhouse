@@ -1,7 +1,109 @@
-<div class="container-fluid">
+<div class="container-fluid" ng-init="listLoad()">
+	<div class="row top-buffer-75"></div>
 	<div class="row">
 		<div class="container-fluid">
 			<h1 class="display-4 main-color-text hub-title-border">My List</h1>
 		</div>
+	</div>
+	<div class="row justify-content-end gutter">
+		<div class="col-xs-1 text-center">
+			<button class="btn btn-lg btn-aff" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
+		</div>
+	</div>
+	<div class="row top-buffer-50" ng-if="emptyList">
+		<div class="col-12 text-center">
+			<h3 class="text-muted">Your List is Empty!</h3>
+		</div>
+	</div>
+	<div class="table-responsive top-buffer-25"  ng-if="!emptyList && !item.remove">
+		<table class="table list-desk">
+			<thead>
+				<th scope="col width-5">#</th>
+				<th scope="col width-15">Name</th>
+				<th scope="col width-40">Notes</th>
+				<th scope="col width-15">Link</th>
+				<th scope="col width-20">Visible To</th>
+				<th scope="col width-5"></th>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in list track by $index">
+					<th scope="row">
+						{{$index + 1}}
+					</th>
+					<td>
+						<div class="list-table-name">
+							{{item.item_name}}
+						</div>
+					</td>
+					<td>
+						<div class="list-table-notes">
+							<p ng-if="item.item_notes != ''">{{item.item_notes}}</p>
+							<p class="text-muted" ng-if="item.item_notes === ''">~no notes~</p>
+						</div>
+					</td>
+					<td>
+						<a href="{{item.link}}" target="_blank" class="main-color-text">Click Here</a>
+					</td>
+					<td ng-if="item.public">
+						<div class="list-table-all-groups">
+							All
+						</div>
+					</td>
+					<td ng-if="!item.public && item.groupsAllowedExpanded.length > 0">
+						<div class="list-table-groups">
+							<ul>
+								<li ng-repeat="group in item.groupsAllowedExpanded">{{group.name}}</li>
+							</ul>
+						</div>
+					</td>
+					<td ng-if="!item.public && item.groupsAllowedExpanded.length === 0">
+						<div class="list-table-all-groups">
+							None
+						</div>
+					</td>
+					<td>
+						<button class="btn btn-aff btn-block"><span class="far fa-edit"></span></button>
+						<hr>
+						<button class="btn btn-danger btn-block" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="row justify-content-center list-mobile gutter buffer-10" ng-repeat="item in list track by $index" ng-if="!emptyList && !item.remove">
+		<div class="container-fluid">
+			<div class="row">
+				<button type="button" class="btn-lg btn-block" ng-click="viewItem($index)" ng-class="{'btn-list-closed': item{{$index}}, 'btn-list-opened': !item{{$index}}}">
+					<div class="row">
+						<div class="col-10 text-left overflow">
+							{{item.item_name}}
+						</div>
+						<div class="col-2">
+							<span class="fa" ng-class="{'fa-angle-down': item{{$index}}, 'fa-angle-up': !item{{$index}}}"></span>
+						</div>
+					</div>	
+				</button>
+			</div>
+			<div class="row">
+				<div uib-collapse="item{{$index}}" class="width-100">
+					<div class="card list-card width-100">
+						<div class="card-body">
+    						<h5 class="card-title"><b>Notes:</b><button class="btn btn-aff btn-sm float-right"><span class="far fa-edit"></span></button></h5>
+    						<p class="card-text" ng-if="item.item_notes != ''">&emsp;{{item.item_notes}}</p>
+    						<p class="card-text text-muted" ng-if="item.item_notes === ''">&emsp;~no notes~</p>
+    						<h5 class="card-title"><b>Visible To:</b></h5>
+    						<p class="card-text" ng-if="item.public">&emsp;All</p>
+    						<ul ng-if="!item.public && item.groupsAllowedExpanded.length > 0">
+								<li ng-repeat="group in item.groupsAllowedExpanded">{{group.name}}</li>
+							</ul>
+							<p class="card-text" ng-if="!item.public && item.groupsAllowedExpanded.length === 0">&emsp;None</p>
+    						<a href="{{item.link}}" target="_blank">Link<button class="btn btn-danger btn-sm float-right" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button></a>
+  						</div>
+					</div>
+				</div>
+			</div>
+			
+		</div>
+		
 	</div>
 </div>

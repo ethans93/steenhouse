@@ -1,4 +1,5 @@
 <div class="container-fluid" ng-init="initCalendar()">
+	<div class="row top-buffer-75"></div>
 	<div class="row">
 		<div class="container-fluid">
 			<h1 class="display-4 main-color-text hub-title-border">{{hubName}}'s Hub</h1>
@@ -32,7 +33,7 @@
 	</div>
 	<div class="row top-buffer-50">
 		<div class="container">
-			<div ui-calendar ng-model="eventSources"></div>
+			<div ui-calendar ng-model="eventSources" class="hub-calendar"></div>
 		</div>
 	</div>  
 </div>
