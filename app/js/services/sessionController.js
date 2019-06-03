@@ -28,14 +28,6 @@ let SessionCtrl = function ($injector, $window, ServerCtrl) {
     this.spliceAlerts = function(index){
        indexAlerts.splice(index, 1);
     }
-
-    var group = {};
-    this.setGroup = function(g){
-        group = g;
-    }
-    this.getGroup = function(){
-        return group;
-    }
 };
 
 module.exports = SessionCtrl;

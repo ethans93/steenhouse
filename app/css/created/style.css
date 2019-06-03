@@ -566,6 +566,10 @@ margin: auto;
   float: right;
 }
 
+.invalid-form{
+  border: red solid 1px !important;
+}
+
 @media(min-width: 992px){
   .non-mobile{
     display: inline;

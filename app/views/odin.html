@@ -5,7 +5,7 @@
 			<h1 class="display-4 main-color-text hub-title-border">Odin</h1>
 		</div>
 	</div>
-    <div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides" ng-swipe-left="left()" ng-swipe-right="right()">
+    <div uib-carousel class="top-buffer-50" active="active" interval="myInterval" no-wrap="noWrapSlides" ng-swipe-left="left()" ng-swipe-right="right()">
         <div uib-slide ng-repeat="image in album track by image.id" index="image.id">
           <img ng-src="{{image.src}}" style="max-width: 100%; max-height: 90vh;">
         </div>

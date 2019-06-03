@@ -22,16 +22,13 @@ let ModalCtrls = function ($http,$uibModal) {
         				if ($scope.form.$valid) {
             				ServerCtrl.signin(user)
             					.then(function (data) {
-                					if (data.success) {
+                					if (data.result === 'success') {
                 						SessionCtrl.signin(data.token);
                 						SessionCtrl.setName(data.name);
                 						$location.path('/hub');
-                    	 				$uibModalInstance.close();
-                    	 				SessionCtrl.pushAlerts('success', data.message);	
+                    	 				$uibModalInstance.close();	
                 					}
-                					else{
-                						ModalCtrls.alert(data.title, data.message);
-                					}
+                					SessionCtrl.pushAlerts(data.type, data.message);
             					}); 
         				}
     				};
@@ -53,17 +50,22 @@ let ModalCtrls = function ($http,$uibModal) {
         				if ($scope.form.$valid) {
             				ServerCtrl.signup(newUser)
             					.then(function (data) {
-                					if (data.success) {
-                						SessionCtrl.signin(data.token);
-                						SessionCtrl.setName(data.name);
-                						$location.path('/hub');
-                    	 				$uibModalInstance.close();	
-                						SessionCtrl.pushAlerts('success', data.message);	
-                					}
-                					else{
-                						ModalCtrls.alert(data.title, data.message);
-                					}
-            					}); 
+                					if (data.result === 'success') {
+            							SessionCtrl.signin(data.token);
+            							SessionCtrl.setName(data.name);
+            							$location.path('/hub');
+            							$uibModalInstance.close();                     
+            						}
+            						else if(data.result === 'fail'){
+            							formInputs.forEach(function(input) {
+            								$('#' + input).removeClass('invalid-form')
+            							})
+            							data.input.forEach(function(i) {
+            								$('#' + i).addClass('invalid-form')
+            							})
+            						}
+            						SessionCtrl.pushAlerts(data.type, data.message)
+            					})
         				}
     				};
 					$scope.close = function(){
@@ -86,13 +88,10 @@ let ModalCtrls = function ($http,$uibModal) {
 						if($scope.form.$valid && $scope.group.restrict != null){
 							ServerCtrl.createGroup(group)
             					.then(function (data) {
-                					if (data.success) {
-                    	 				$uibModalInstance.close();
-                    	 				SessionCtrl.pushAlerts('success', data.message);	
+                					if (data.result === 'success') {
+                    	 				$uibModalInstance.close();	
                 					}
-                					else{
-                						SessionCtrl.pushAlerts('warning', data.message);
-                					}
+                					SessionCtrl.pushAlerts(data.type, data.message);
             					});
 						}
 						else if(!$scope.form.$valid && $scope.group.restrict != null){
@@ -112,7 +111,6 @@ let ModalCtrls = function ($http,$uibModal) {
 			$uibModal.open({
 				templateUrl: '../views/modals/additem_modal.html',
 				controller: function($rootScope, $scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl){
-					SessionCtrl.pushAlerts('info', 'TEST');
 					$scope.groups = groups;
 					$scope.groupsTrim = [];
 					$scope.groups.forEach(function(g) {
@@ -126,14 +124,11 @@ let ModalCtrls = function ($http,$uibModal) {
 							item.selected = (item.selected === undefined ? item.selected = [] : item.selected = item.selected);
 							ServerCtrl.addItem(item)
 								.then(function(data) {
-									if(data.success){
+									if(data.result === 'success'){
 										$rootScope.$emit(data.emit);
-										SessionCtrl.pushAlerts(data.type, data.message);
 										$uibModalInstance.close();
 									}
-									else{
-										SessionCtrl.pushAlerts('warning', data.message);
-									}
+									SessionCtrl.pushAlerts(data.type, data.message);
 								})
 						}	
 					}
@@ -151,8 +146,10 @@ let ModalCtrls = function ($http,$uibModal) {
 					$scope.confirm = function(){
 						ServerCtrl.removeItem({id: id})
 							.then(function(data) {
+								if(data.emit != ''){
+									$rootScope.$emit(data.emit);
+								}
 								SessionCtrl.pushAlerts(data.type, data.message);
-								$rootScope.$emit(data.emit);
 								if(data.result === 'success'){
 									$uibModalInstance.close();
 								}

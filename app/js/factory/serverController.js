@@ -14,6 +14,7 @@ let ServerCtrl = function ($http) {
                 return response.data;
             }, function errorCallback(response) {
                 console.log("errorCallback " + response.data);
+                return response.data;
             });
         },
         signin: function (userInfo) {
@@ -28,6 +29,7 @@ let ServerCtrl = function ($http) {
                 return response.data;
             }, function errorCallback(response) {
                 console.log("errorCallback " + response.data);
+                return response.data;
             });
         },
         getOdinPics: function(){
@@ -41,6 +43,7 @@ let ServerCtrl = function ($http) {
                 return response.data;
             }, function errorCallback(response) {
                 console.log("errorCallback " + response.data);
+                return response.data;
             });
         },
         authenticate: function(token){
@@ -55,6 +58,7 @@ let ServerCtrl = function ($http) {
                 return response.data;
             }, function errorCallback(response) {
                 console.log("errorCallback " + response.data);
+                return response.data;
             });
         },
         createGroup: function(groupInfo){
@@ -69,6 +73,7 @@ let ServerCtrl = function ($http) {
                 return response.data;
             }, function errorCallback(response) {
                 console.log("errorCallback " + response.data);
+                return response.data;
             });
         },
         getGroups: function(){

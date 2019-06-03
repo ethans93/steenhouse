@@ -19,6 +19,7 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
             .then(function(data){
                 if(next.restrictions.restricted && !data.auth){
                     $location.path('/home');
+                    SessionCtrl.pushAlerts(data.type, data.message);
                 }
                 if(!next.restrictions.restricted && data.auth){
                     $location.path(current.originalPath);

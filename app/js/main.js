@@ -15,7 +15,7 @@ require('../../node_modules/fullcalendar/dist/fullcalendar.min.js');
 let IndexCtrl           = require('../js/controllers/indexController.js'),
     HomeCtrl            = require('../js/controllers/homeController.js'),
     SignUpCtrl          = require('../js/controllers/signupController.js'),
-    SignInCtrl          = require('../js/controllers/signinController.js'),
+    //SignInCtrl          = require('../js/controllers/signinController.js'),
     HubCtrl             = require('../js/controllers/hubController.js'),
     GroupsCtrl          = require('../js/controllers/groupsController.js'),
     GroupCtrl          = require('../js/controllers/groupController.js'),
@@ -48,13 +48,13 @@ app.config(function ($routeProvider, $httpProvider) {
 app.controller("IndexCtrl", ["$rootScope", "$scope", "$location", "$window", "$route", "SessionCtrl", "ServerCtrl", "ModalCtrls", IndexCtrl]);
 app.controller("HomeCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ServerCtrl", "ModalCtrls", HomeCtrl]);
 app.controller("SignUpCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ServerCtrl", "ModalCtrls", SignUpCtrl]);
-app.controller("SignInCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ServerCtrl", SignInCtrl]);
+//app.controller("SignInCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ServerCtrl", SignInCtrl]);
 app.controller("HubCtrl", ["$scope", "$location", "$window", "SessionCtrl", "ModalCtrls", HubCtrl]);
 app.controller("GroupsCtrl", ["$scope", "$location", "$window", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupsCtrl]);
 app.controller("GroupCtrl", ["$scope", "$location", "$window", "$routeParams", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupCtrl]);
 app.controller("ListCtrl", ["$rootScope", "$scope", "$location", "$window", "ServerCtrl", "ModalCtrls", "SessionCtrl", ListCtrl]);
 
-app.controller("OdinCtrl", ["$scope", "$location", "$window", "ServerCtrl", OdinCtrl]);
+app.controller("OdinCtrl", ["$scope", "$location", "$window", "ServerCtrl", "SessionCtrl", OdinCtrl]);
 //List
 //Group
 //Account

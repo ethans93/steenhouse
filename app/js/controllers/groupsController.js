@@ -4,7 +4,7 @@ let GroupsCtrl = function ($scope, $location, $window, ServerCtrl, ModalCtrls, S
 	$scope.groupsLoad = function(){
 		ServerCtrl.getGroups()
 			.then(function(data){
-				if(data.success){
+				if(data.result === 'success'){
 					$scope.groups = data.groups;
 					$scope.admins = data.admins;
 					$scope.groups.forEach(function(g) {
@@ -19,13 +19,12 @@ let GroupsCtrl = function ($scope, $location, $window, ServerCtrl, ModalCtrls, S
 					})
 				}
 				else{
-					SessionCtrl.pushAlerts('warning', data.message);
+					SessionCtrl.pushAlerts(data.type, data.message);
 				}
 				
 			})
 	}
 	$scope.goToGroup = function(group){
-		SessionCtrl.setGroup(group);
 		$location.path('/hub/groups/' + group.url);
 	}
 

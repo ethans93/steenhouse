@@ -4,7 +4,7 @@ let ListCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, Mod
 	$scope.listLoad = function(){
 		ServerCtrl.getList()
 			.then(function(data){
-				if(data.success){
+				if(data.result === 'success'){
 					if(data.list.length === 0){
 						$scope.emptyList = true;
 					}
@@ -45,7 +45,7 @@ let ListCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, Mod
 					}
 				}
 				else{
-					SessionCtrl.pushAlerts('warning', data.message);
+					SessionCtrl.pushAlerts(data.type, data.message);
 				}
 				
 			})
