@@ -9,55 +9,48 @@ let ListCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, Mod
 						$scope.emptyList = true;
 					}
 					else{
-						var removeCount = 0;
-						var i = 0;
-						data.list.forEach(function(l) {
-							if(l.remove === true){
-								removeCount++;
-							}
+						for(var i = 0; i < data.list.length; i++){
 							$scope['item' + i] = true;
-							i++;
+						}
+						$scope.emptyList = false;
+						$scope.list = data.list;
+						$scope.groups = data.groups;
+						$scope.groupsTrim = [];
+						$scope.groups.forEach(function(g) {
+							g.prefix = g.name.split('#')[0];
+							g.suffix = g.name.split('#')[1];
+							$scope.groupsTrim.push({id: g.id, name: g.prefix})
 						})
-						if(removeCount === data.list.length){
-							$scope.emptyList = true;
-						}
-						else{
-							$scope.emptyList = false;
-							$scope.list = data.list;
-							$scope.groups = data.groups;
-							$scope.groups.forEach(function(g) {
-								g.prefix = g.name.split('#')[0];
-								g.suffix = g.name.split('#')[1];
-							})
-							$scope.list.forEach(function(item) {
-								item.groupsAllowedExpanded = [];
-								if(item.groups_allowed != null){
-									item.groups_allowed.forEach(function(obj) {
-										$scope.groups.forEach(function(g) {
-											if(obj === g.id){
-												item.groupsAllowedExpanded.push({id: g.id, name: g.prefix})
-											}
-										})
+						$scope.list.forEach(function(item) {
+							item.groupsAllowedExpanded = [];
+							if(item.groups_allowed != null){
+								item.groups_allowed.forEach(function(obj) {
+									$scope.groups.forEach(function(g) {
+										if(obj === g.id){
+											item.groupsAllowedExpanded.push({id: g.id, prefix: g.prefix, suffix: g.suffix})
+										}
 									})
-								}
-							})
-						}
+								})
+							}
+						})
 					}
 				}
 				else{
 					SessionCtrl.pushAlerts(data.type, data.message);
 				}
-				
 			})
 	}
 	$scope.viewItem = function(index){
 		$scope['item' + index] = !$scope['item' + index];
 	}	
 	$scope.addItem = function(){
-		ModalCtrls.addItem($scope.groups);
+		ModalCtrls.addItem($scope.groupsTrim, 'Add');
 	}
 	$scope.removeItem = function(id){
 		ModalCtrls.removeItem(id)
+	}
+	$scope.updateItem = function(item){
+		ModalCtrls.updateItem(item, $scope.groupsTrim, 'Update');
 	}
 	$rootScope.$on('refreshList', function() {
 		$scope.listLoad();

@@ -7,7 +7,7 @@
 	</div>
 	<div class="row justify-content-end gutter">
 		<div class="col-xs-1 text-center">
-			<button class="btn btn-lg btn-aff" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
+			<button class="btn btn-lg btn-outline-success" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
 		</div>
 	</div>
 	<div class="row top-buffer-50" ng-if="emptyList">
@@ -16,8 +16,8 @@
 		</div>
 	</div>
 	<div class="table-responsive top-buffer-25"  ng-if="!emptyList && !item.remove">
-		<table class="table list-desk">
-			<thead>
+		<table class="table list-desk table-striped">
+			<thead class="list-table-head">
 				<th scope="col width-5">#</th>
 				<th scope="col width-15">Name</th>
 				<th scope="col width-40">Notes</th>
@@ -27,14 +27,14 @@
 			</thead>
 			<tbody>
 				<tr ng-repeat="item in list track by $index">
-					<th scope="row">
+					<td scope="row">
 						{{$index + 1}}
-					</th>
-					<td>
+					</td>
+					<th>
 						<div class="list-table-name">
 							{{item.item_name}}
 						</div>
-					</td>
+					</th>
 					<td>
 						<div class="list-table-notes">
 							<p ng-if="item.item_notes != ''">{{item.item_notes}}</p>
@@ -42,7 +42,8 @@
 						</div>
 					</td>
 					<td>
-						<a href="{{item.link}}" target="_blank" class="main-color-text">Click Here</a>
+						<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">Click Here</a>
+						<p class="text-muted" ng-if="item.link === ''">~no link~</a>
 					</td>
 					<td ng-if="item.public">
 						<div class="list-table-all-groups">
@@ -52,7 +53,7 @@
 					<td ng-if="!item.public && item.groupsAllowedExpanded.length > 0">
 						<div class="list-table-groups">
 							<ul>
-								<li ng-repeat="group in item.groupsAllowedExpanded">{{group.name}}</li>
+								<li ng-repeat="group in item.groupsAllowedExpanded track by $index">{{group.prefix}}<span class="text-muted three-quarters-text">#{{group.suffix}}</span></li>
 							</ul>
 						</div>
 					</td>
@@ -61,10 +62,10 @@
 							None
 						</div>
 					</td>
-					<td>
-						<button class="btn btn-aff btn-block"><span class="far fa-edit"></span></button>
+					<td class="text-center">
+						<button class="btn btn-primary btn-sm" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
 						<hr>
-						<button class="btn btn-danger btn-block" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
+						<button class="btn btn-danger btn-sm" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
 					</td>
 				</tr>
 			</tbody>
@@ -88,16 +89,18 @@
 				<div uib-collapse="item{{$index}}" class="width-100">
 					<div class="card list-card width-100">
 						<div class="card-body">
-    						<h5 class="card-title"><b>Notes:</b><button class="btn btn-aff btn-sm float-right"><span class="far fa-edit"></span></button></h5>
+    						<h5 class="card-title"><b>Notes:</b><button class="btn btn-primary btn-sm float-right" ng-click="updateItem(item)"><span class="far fa-edit"></span></button></h5>
     						<p class="card-text" ng-if="item.item_notes != ''">&emsp;{{item.item_notes}}</p>
     						<p class="card-text text-muted" ng-if="item.item_notes === ''">&emsp;~no notes~</p>
     						<h5 class="card-title"><b>Visible To:</b></h5>
     						<p class="card-text" ng-if="item.public">&emsp;All</p>
     						<ul ng-if="!item.public && item.groupsAllowedExpanded.length > 0">
-								<li ng-repeat="group in item.groupsAllowedExpanded">{{group.name}}</li>
+								<li ng-repeat="group in item.groupsAllowedExpanded">{{group.prefix}}<span class="text-muted three-quarters-text">#{{group.suffix}}</span></li>
 							</ul>
 							<p class="card-text" ng-if="!item.public && item.groupsAllowedExpanded.length === 0">&emsp;None</p>
-    						<a href="{{item.link}}" target="_blank">Link<button class="btn btn-danger btn-sm float-right" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button></a>
+							<h5 class="card-title"><b>Link:</b></h5>
+							<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">&emsp;Click Here<button class="btn btn-danger btn-sm float-right" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button></a>
+							<p class="text-muted" ng-if="item.link === ''">&emsp;~no link~<button class="btn btn-danger btn-sm float-right" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button></a>
   						</div>
 					</div>
 				</div>

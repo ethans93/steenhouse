@@ -1,6 +1,6 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text">Add Item</h1>
+        <h1 class="modal-title main-color-text">{{type}} Item</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -23,7 +23,7 @@
             </div>
             <div class="form-group">
                 <label for="link"><span class="fa fa-link main-color-text"></span> Link:</label>
-                <input required type="text" ng-model="item.link" name="link" id="link" class="form-control" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"  uib-tooltip="Link to item or to picture of item" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <input type="text" ng-model="item.link" name="link" id="link" class="form-control" pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"  uib-tooltip="Link to item or to picture of item" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.link.$touched">
                 <p ng-show="!form.link.$valid" class="input-form-warning">Link invalid</p>
@@ -35,17 +35,16 @@
                 <label class="btn btn-aff" ng-model="item.public" uib-btn-radio="true">Yes</label>
                 <label class="btn btn-aff" ng-model="item.public" uib-btn-radio="false">No</label>
             </div>
-            <div ng-show="resNull">
+            <div ng-show="form.$submitted && item.public === null">
                 <p class="input-form-warning">Please select an option</p>
             </div>
             <div class="form-group buffer-25" ng-if="item.public === false">
                 <label for="groups"><span class="fa fa-tasks main-color-text"></span> Select which groups can see it:</label>
                 <select ng-options="group as group.name for group in groupsTrim track by group.id" ng-model="item.selected" multiple class="form-control">
-                
                 </select>
             </div>
             <hr>
-            <button type="submit" class="btn btn-aff modal-btn">Add</button> 
+            <button type="submit" class="btn btn-aff modal-btn">{{type}}</button> 
             <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Close</button>
         </form>
     </div>   

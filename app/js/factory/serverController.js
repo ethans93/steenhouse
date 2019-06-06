@@ -2,6 +2,35 @@
 
 let ServerCtrl = function ($http) {
 	return{
+        server: function(url){
+            return $http({
+                method: 'GET',
+                url: url,
+                headers: {
+                    'Content-type': 'application/json'
+                }
+            }).then(function successCallback(response) {
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("errorCallback " + response.data);
+                return response.data;
+            });
+        },
+        server: function (url, data) {
+            return $http({
+                method: 'POST',
+                url: url,
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                data: data
+            }).then(function successCallback(response) {
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("errorCallback " + response.data);
+                return response.data;
+            });
+        },
         signup: function (userInfo) {
             return $http({
                 method: 'POST',
@@ -127,6 +156,21 @@ let ServerCtrl = function ($http) {
                     'Content-type': 'application/json'
                 },
                 data: id
+            }).then( function successCallback(response) {
+                return response.data;
+            }, function errorCallback(response) {
+                console.log("errorCallback " + response.data.message);
+                return response.data;
+            });
+        },
+        updateItem: function(item){
+            return $http({
+                method: 'POST',
+                url: '/updateItem',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                data: item
             }).then( function successCallback(response) {
                 return response.data;
             }, function errorCallback(response) {

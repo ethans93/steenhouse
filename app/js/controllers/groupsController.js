@@ -1,6 +1,6 @@
 'use strict';
 
-let GroupsCtrl = function ($scope, $location, $window, ServerCtrl, ModalCtrls, SessionCtrl) {
+let GroupsCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, ModalCtrls, SessionCtrl) {
 	$scope.groupsLoad = function(){
 		ServerCtrl.getGroups()
 			.then(function(data){
@@ -20,14 +20,25 @@ let GroupsCtrl = function ($scope, $location, $window, ServerCtrl, ModalCtrls, S
 				}
 				else{
 					SessionCtrl.pushAlerts(data.type, data.message);
-				}
-				
+				}	
 			})
 	}
-	$scope.goToGroup = function(group){
-		$location.path('/hub/groups/' + group.url);
-	}
 
+	$scope.goToGroup = function(group){
+		$location.path('/hub/groups/' + group);
+	}
+	$scope.leaveGroup = function(groupID){
+		ModalCtrls.leaveGroup(groupID);
+	}
+	$scope.createGroup = function(){
+		ModalCtrls.createGroup();
+	}
+	$scope.joinGroup = function(){
+		ModalCtrls.joinGroup();
+	}
+	$rootScope.$on('refreshGroups', function() {
+		$scope.groupsLoad();
+	})
 };
 
 module.exports = GroupsCtrl;

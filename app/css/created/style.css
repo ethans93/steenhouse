@@ -200,7 +200,7 @@ footer{
 .btn-list-closed{
   color: #fff;
   border: solid 2px #18453b;
-  background-color: #216358;
+  background-color: #18453b;
   outline: none !important;
   transition: all 0.3s;
 }
@@ -272,6 +272,11 @@ footer{
 
 .top-spacing-50{
   margin-top: 50px;
+}
+
+.spacing-10{
+  margin-top: 10px;
+  margin-bottom: 10px;
 }
 
 .navbar-default .navbar-toggle .icon-bar {
@@ -414,25 +419,51 @@ margin: auto;
   background-image: url(../images/arrowPA.png) !important;
 }
 
-.groups-card{
-  margin-top: 10px; 
-  margin-bottom: 10px; 
-  border-radius: 15px; 
-  box-shadow: 3px 4px #999;
+.groups-info{
+  border-left: 2px solid #18453b;
+  border-bottom-left-radius: 15px;
+  border-top-left-radius: 15px;
+  box-shadow: 0px 4px #999;
   cursor: pointer;
+  transition: all 0.3s;
 }
 
-.groups-card:hover{
-  transition: all 0.5s;
-  box-shadow: 6px 8px #555;
+.groups-info:hover{
+  box-shadow: -6px 8px #666;
+  margin-right: 2px;
 }
+
 
 .groups-header{
   background-color: #18453b;
+  border-top: 2px solid #18453b;
+  border-left: 2px solid #18453b;
+  border-top-left-radius: 14px;
   color: #fff;
-  border-top-right-radius: 14px !important;
-  border-top-left-radius: 14px !important;
-  /*text-shadow: #000 1px 2px;*/
+  padding: 10px 0px 10px 10px;
+}
+
+.groups-text{
+  border-bottom: 2px solid #18453b;
+  border-bottom-left-radius: 14px;
+  padding: 10px 0px 10px 10px;
+}
+
+.groups-btn{
+  background-color: #dc3545;
+  color: #fff; 
+  writing-mode: vertical-rl; 
+  text-orientation: mixed;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+  box-shadow: 0px 4px #999;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.groups-btn:hover{
+  box-shadow: 6px 8px #666;
+  margin-left: 2px;
 }
 
 .groups-suffix{
@@ -477,6 +508,11 @@ margin: auto;
 
 .hub-calendar button:focus{
   outline: none;
+}
+
+.list-table-head{
+  color: #fff;
+  background-color: #18453b;
 }
 
 .list-row{
@@ -570,11 +606,21 @@ margin: auto;
   border: red solid 1px !important;
 }
 
+.three-quarters-text{
+  font-size: 0.75rem;
+}
+
 @media(min-width: 992px){
   .non-mobile{
     display: inline;
   }
+  .non-mobile-flex{
+    display: flex;
+  }
   .mobile{
+    display: none;
+  }
+  .mobile-flex{
     display: none;
   }
   .carousel-control-prev,
@@ -587,7 +633,13 @@ margin: auto;
   .mobile{
     display: inline;
   }
+  .mobile-flex{
+    display: flex;
+  }
   .non-mobile{
+    display: none;
+  }
+  .non-mobile-flex{
     display: none;
   }
 }

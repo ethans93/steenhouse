@@ -9,7 +9,7 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
     $scope.collapse = function(){
         $(".navbar-collapse").collapse('hide');
     }
-
+    
     $scope.$on('$locationChangeSuccess', function () {
         $scope.currentPage = $location.path();
     });
@@ -19,7 +19,7 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
             .then(function(data){
                 if(next.restrictions.restricted && !data.auth){
                     $location.path('/home');
-                    SessionCtrl.pushAlerts(data.type, data.message);
+                    //SessionCtrl.pushAlerts(data.type, data.message);
                 }
                 if(!next.restrictions.restricted && data.auth){
                     $location.path(current.originalPath);
@@ -50,25 +50,25 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
         $location.path('/home');
     } 
 
-    $(function () {
-        var lastScrollTop = 0;
-        var $navbar = $('.navbar');
+    // $(function () {
+    //     var lastScrollTop = 0;
+    //     var $navbar = $('.navbar');
         
-        $(window).scroll(function(event){
-            if($(window).width() < 992){
-                var st = $(this).scrollTop();
+    //     $(window).scroll(function(event){
+    //         if($(window).width() < 992){
+    //             var st = $(this).scrollTop();
 
-                if (st > lastScrollTop) { 
-                    $navbar.fadeOut();
-                    $scope.collapse();
-                } 
-                else {
-                    $navbar.fadeIn();
-                }
-                lastScrollTop = st;
-            }
-        });
-    });
+    //             if (st > lastScrollTop) { 
+    //                 $navbar.fadeOut();
+    //                 $scope.collapse();
+    //             } 
+    //             else {
+    //                 $navbar.fadeIn();
+    //             }
+    //             lastScrollTop = st;
+    //         }
+    //     });
+    // });
 
     $scope.signInModal = function(){
         $scope.collapse();

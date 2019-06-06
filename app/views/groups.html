@@ -5,17 +5,91 @@
 			<h1 class="display-4 main-color-text hub-title-border">Groups</h1>
 		</div>
 	</div>
-	<div class="row justify-content-center">
-		<div class="col-md-8 col-xs-12">
-			<div class="card groups-card" ng-repeat="group in groups track by $index" ng-click="goToGroup(group)">
-  				<div class="card-header groups-header">
-    				<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
-  				</div>
-  				<!-- style="background-color: #540115; color: #CDC092" -->
-  				<div class="card-body">
-    				<p class="card-text text-right"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
-  				</div>
+	<div class="row justify-content-end non-mobile-flex">
+		<div class="col-lg-8">
+			<table class="table">
+				<tbody>
+					<tr ng-repeat="group in groups track by $index">
+						<td class="width-100">
+							<div class="row">
+								<div class="col no-gutter groups-info" ng-click="goToGroup(group.url)">
+									<div class="container-fluid groups-header">
+										<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
+									</div>
+									<div class="container-fluid groups-text">
+										<p class="card-text"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
+									</div>
+								</div>
+								<div class="col-auto no-gutter text-center groups-btn" ng-click="leaveGroup(group.id)">
+									<span class="fa fa-sign-out-alt align-bottom"> Leave</span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-lg-2">
+			<hr>
+			<button class="btn btn-block btn-outline-success" ng-click="createGroup()"><span class="fa fa-plus"></span> Create Group</button>
+			<hr>
+			<button class="btn btn-block btn-outline-info" ng-click="joinGroup()"><span class="fa fa-sign-in-alt"></span> Join Group</button>
+			<hr>
+		</div>
+	</div>
+	<div class="container-fluid no-gutter mobile">
+		<div class="row width-100 no-gutter">
+			<div class="col-md-6 col-sm-12 col-xs-12 text-center">
+				<button class="btn btn-block btn-success spacing-10" ng-click="createGroup()"><span class="fa fa-plus"></span> Create Group</button>
+			</div>
+			<div class="col-md-6 col-sm-12 col-xs-12 text-center">
+				<button class="btn btn-block btn-info spacing-10" ng-click="joinGroup()"><span class="fa fa-sign-in-alt"></span> Join Group</button>
 			</div>
 		</div>
+
+		<table class="table">
+				<tbody>
+					<tr ng-repeat="group in groups track by $index">
+						<td class="width-100">
+							<div class="row justify-content-center">
+								<div class="col-md-8 col no-gutter groups-info" ng-click="goToGroup(group.url)">
+									<div class="container-fluid groups-header">
+										<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
+									</div>
+									<div class="container-fluid groups-text">
+										<p class="card-text"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
+									</div>
+								</div>
+								<div class="col-auto no-gutter text-center groups-btn" ng-click="leaveGroup(group.id)">
+									<span class="fa fa-sign-out-alt align-bottom"> Leave</span>
+								</div>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+
+
+
+
+
+	<!-- 	<div class="row width-100 no-gutter" ng-repeat="group in groups track by $index">
+			<div class="col" style="padding-right: 0px; margin-right: 0px">
+				<div class="card groups-card" ng-click="goToGroup(group)">
+					<div class="card-header groups-header">
+						<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
+					</div>
+					<div class="card-body">
+						<p class="card-text"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
+					</div>
+
+				</div>
+			</div>
+			<div class="col-auto" style="padding-left: 0px; margin-left: 0px;">
+				<div class="card groups-btn-card text-center" style="">
+					<span class="fa fa-sign-out-alt"> Leave</span>
+				</div>
+			</div>
+		</div> -->
 	</div>
 </div>

@@ -81,7 +81,7 @@ let ModalCtrls = function ($http,$uibModal) {
 		createGroup: function(){
 			$uibModal.open({
 				templateUrl:'../views/modals/creategroup_modal.html',
-				controller: function($scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl, ModalCtrls){
+				controller: function($rootScope, $scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl, ModalCtrls){
 					$scope.resNull = false;
 					$scope.group = {restrict: null}
 					$scope.submit = function(group){
@@ -89,6 +89,7 @@ let ModalCtrls = function ($http,$uibModal) {
 							ServerCtrl.createGroup(group)
             					.then(function (data) {
                 					if (data.result === 'success') {
+                						$rootScope.$emit(data.emit);
                     	 				$uibModalInstance.close();	
                 					}
                 					SessionCtrl.pushAlerts(data.type, data.message);
@@ -107,21 +108,20 @@ let ModalCtrls = function ($http,$uibModal) {
 				}
 			})
 		},
-		addItem : function(groups){
+		addItem : function(groups, type){
 			$uibModal.open({
 				templateUrl: '../views/modals/additem_modal.html',
 				controller: function($rootScope, $scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl){
-					$scope.groups = groups;
-					$scope.groupsTrim = [];
-					$scope.groups.forEach(function(g) {
-						g.prefix = g.name.split('#')[0];
-						g.suffix = g.name.split('#')[1];
-						$scope.groupsTrim.push({id: g.id, name: g.prefix})
-					})
+					$scope.type = btn;
+					$scope.groupsTrim = groups;
+					$scope.item = {
+						notes: '',
+						link: '',
+						public: null,
+						selected: []
+					}
 					$scope.submit = function(item){
-						if($scope.form.$valid){
-							item.notes = (item.notes === undefined ? item.notes = "" : item.notes = item.notes);
-							item.selected = (item.selected === undefined ? item.selected = [] : item.selected = item.selected);
+						if($scope.form.$valid && item.public != null){
 							ServerCtrl.addItem(item)
 								.then(function(data) {
 									if(data.result === 'success'){
@@ -154,6 +154,83 @@ let ModalCtrls = function ($http,$uibModal) {
 									$uibModalInstance.close();
 								}
 							})
+					}
+					$scope.close = function(){
+						$uibModalInstance.close();
+					}
+				}
+			})
+		},
+		updateItem: function(item, groups, type){
+			$uibModal.open({
+				templateUrl: '../views/modals/additem_modal.html',
+				controller: function($rootScope, $scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl){
+					$scope.type = type;
+					$scope.groupsTrim = groups;
+					$scope.item = {
+						id: item.id,
+						name: item.item_name,
+						notes: item.item_notes,
+						link: item.link,
+						public: item.public,
+						selected: item.groupsAllowedExpanded
+					}
+					$scope.submit = function(item){
+						if($scope.form.$valid){
+							item.selected = (item.public === true ? [] : item.selected);
+							ServerCtrl.updateItem(item)
+								.then(function(data) {
+									if(data.result === 'success'){
+										$rootScope.$emit(data.emit);
+										$uibModalInstance.close();
+									}
+									SessionCtrl.pushAlerts(data.type, data.message);
+								})
+						}	
+					}
+					$scope.close = function(){
+						$uibModalInstance.close();
+					}
+				}
+			})
+		},
+		leaveGroup: function(groupID){
+			$uibModal.open({
+				templateUrl: '../views/modals/leavegroup_modal.html',
+				controller: function($rootScope, $scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl){
+					$scope.confirm = function(){
+						ServerCtrl.server('/leaveGroup', {id: groupID})
+							.then(function(data) {
+								if(data.emit != ''){
+									$rootScope.$emit(data.emit);
+								}
+								SessionCtrl.pushAlerts(data.type, data.message);
+								if(data.result === 'success'){
+									$uibModalInstance.close();
+								}
+							})
+					}
+					$scope.close = function(){
+						$uibModalInstance.close();
+					}
+				}
+			})
+		},
+		joinGroup: function(){
+			$uibModal.open({
+				templateUrl: '../views/modals/joingroup_modal.html',
+				controller: function($rootScope, $scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl){
+					$scope.submit = function(groupInfo){
+						if($scope.form.$valid){
+							ServerCtrl.server('/joinGroup', groupInfo)
+								.then(function(data) {
+									SessionCtrl.pushAlerts(data.type, data.message);
+									if(data.result === 'success'){
+										$rootScope.$emit(data.emit);
+										$uibModalInstance.close();
+									}
+								})
+						}
 					}
 					$scope.close = function(){
 						$uibModalInstance.close();

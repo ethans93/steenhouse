@@ -10,14 +10,14 @@
                 <form name="form" class="form-horizontal css-form" ng-submit="submit(signup)" ng-keyup="$event.keyCode == 13 && submit(signup)">
                     <div class="form-group">
                         <label for="email"><span class="fa fa-envelope main-color-text"></span> Email:</label>
-                        <input required type="email" ng-model="signup.email"  name="email" id="email" class="form-control" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}"  uib-tooltip="e.g. example@domain.com" tooltip-placement="bottom-left" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                        <input required type="email" ng-model="signup.email"  name="email" id="email" class="form-control" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}"  uib-tooltip="e.g. example@domain.com" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
                     </div>
                     <div ng-show="form.$submitted || form.email.$touched">
                         <p ng-show="!form.email.$valid" class="input-form-warning">Email invalid</p>
                     </div>
                     <div class="form-group">
                         <label for="pw"><span class="fa fa-lock main-color-text"></span> Password:</label>
-                        <input required type="password" ng-model="signup.pw" name="pw" id="pw" class="form-control" pattern="[^\s]{8,}" uib-tooltip="Password must be at least 8 characters long and not contain any spaces." tooltip-placement="bottom-left" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                        <input required type="password" ng-model="signup.pw" name="pw" id="pw" class="form-control" pattern="[^\s]{8,}" uib-tooltip="Password must be at least 8 characters long and not contain any spaces." tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
                     </div>
                     <div ng-show="form.$submitted || form.pw.$touched">
                         <p ng-show="!form.pw.$valid" class="input-form-warning">Password is too short or contains a space</p>
@@ -31,7 +31,7 @@
                     </div>
                     <div class="form-group">
                         <label for="name"><span class="fa fa-user main-color-text"></span> Name:</label>
-                        <input  required type="text" ng-model="signup.name"  name="name" id="name" class="form-control" pattern="^[a-zA-Z\.\'\-]{1,50}(?: [a-zA-Z\.\'\-]{1,50})+$" uib-tooltip="First and last name, e.g. Jane Doe III" tooltip-placement="bottom-left" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                        <input  required type="text" ng-model="signup.name"  name="name" id="name" class="form-control" pattern="^[a-zA-Z\.\'\-]{1,50}(?: [a-zA-Z\.\'\-]{1,50})+$" uib-tooltip="First and last name, e.g. Jane Doe III" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
                     </div>
                     <div ng-show="form.$submitted || form.name.$touched">
                         <p ng-show="!form.name.$valid" class="input-form-warning">Name contains invalid character</p>
@@ -39,7 +39,7 @@
 
                     <div class="form-group">
                         <label for="bday"><span class="fa fa-gift main-color-text"></span> Birthday:</label>
-                        <input  required type="text" ng-model="signup.bday"  name="bday" id="bday" class="form-control" pattern="^(?:((?:0[13578]|1[02])(\/)(?:31))|(?:(?:0[13-9]|1[0-2])(\/)(?:29|30)))$|^((02)(\/)(?:29))$|^(?:(?:0[1-9])|(?:1[0-2]))(\/)(?:0[1-9]|1\d|2[0-8])$" uib-tooltip="e.g. 04/20 or MM/DD" tooltip-placement="bottom-left" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                        <input  required type="text" ng-model="signup.bday"  name="bday" id="bday" class="form-control" pattern="^(?:((?:0[13578]|1[02])(\/)(?:31))|(?:(?:0[13-9]|1[0-2])(\/)(?:29|30)))$|^((02)(\/)(?:29))$|^(?:(?:0[1-9])|(?:1[0-2]))(\/)(?:0[1-9]|1\d|2[0-8])$" uib-tooltip="e.g. 04/20 or MM/DD" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
                     </div>
                     <div ng-show="form.$submitted || form.bday.$touched">
                         <p ng-show="!form.bday.$valid" class="input-form-warning">D.O.B. is invalid, check formatting</p>
@@ -47,18 +47,18 @@
 
                     <div class="form-group">
                         <label for="group"><span class="fa fa-globe main-color-text"></span> Group:</label>
-                        <input  required type="text" ng-model="signup.group"  name="group" id="group" class="form-control" pattern="^(.*\S.*)$" uib-tooltip="The name of the group that you were invited to, e.g.  &quot;Smith Family&quot;" tooltip-placement="bottom-left" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                        <input  required type="text" ng-model="signup.group"  name="group" id="group" class="form-control" pattern="^(.*\S.*)$" uib-tooltip="The name of the group that you were invited to, e.g.  &quot;Smith Family&quot;" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
                     </div>
                     <div ng-show="form.$submitted || form.group.$touched">
-                        <p ng-show="!form.group.$valid" class="input-form-warning">Group was left blank</p>
+                        <p ng-show="!form.group.$valid" class="input-form-warning">Group left blank</p>
                     </div>
 
                     <div class="form-group">
                         <label for="code"><span class="fa fa-key main-color-text"></span> Code:</label>
-                        <input  required type="text" ng-model="signup.code"  name="code" id="code" class="form-control" pattern="^(.*\S.*)$" uib-tooltip="The code provided to you by the inviter" tooltip-placement="bottom-left" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                        <input  required type="text" ng-model="signup.code"  name="code" id="code" class="form-control" pattern="^(.*\S.*)$" uib-tooltip="The code provided to you by the inviter" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
                     </div>
                     <div ng-show="form.$submitted || form.code.$touched">
-                        <p ng-show="!form.code.$valid" class="input-form-warning">Code was left blank</p>
+                        <p ng-show="!form.code.$valid" class="input-form-warning">Code left blank</p>
                     </div>
                     <div class="form-group top-buffer-25">
                         <div class="row">
