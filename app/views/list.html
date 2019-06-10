@@ -2,16 +2,21 @@
 	<div class="row top-buffer-75"></div>
 	<div class="row">
 		<div class="container-fluid">
-			<h1 class="display-4 main-color-text hub-title-border">My List</h1>
+			<h1 class="display-6 main-color-text hub-title-border">
+				<a href="#!/hub" class="title-links hub-title-desk"><span class="fab fa-hubspot">&nbsp;</span>Hub</a>
+				<span class="fsu-gold hub-title-desk"> <span class="fa fa-angle-right"></span> </span>
+				<a href="#!/hub" class="fsu-gold hub-title-mobile"> <span class="fa fa-angle-left"></span> </a>
+				<span class="fa fa-list-ul">&nbsp;</span>My List
+			</h1>
 		</div>
 	</div>
 	<div class="row justify-content-end gutter">
 		<div class="col-xs-1 text-center">
-			<button class="btn btn-lg btn-outline-success" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
+			<button class="btn btn-lg btn-custom-success" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
 		</div>
 	</div>
 	<div class="row top-buffer-50" ng-if="emptyList">
-		<div class="col-12 text-center">
+		<div class="col-12 text-center" style="height: 50vh">
 			<h3 class="text-muted">Your List is Empty!</h3>
 		</div>
 	</div>
@@ -43,7 +48,7 @@
 					</td>
 					<td>
 						<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">Click Here</a>
-						<p class="text-muted" ng-if="item.link === ''">~no link~</a>
+						<p class="text-muted" ng-if="item.link === ''">~no link~</p>
 					</td>
 					<td ng-if="item.public">
 						<div class="list-table-all-groups">
@@ -63,50 +68,60 @@
 						</div>
 					</td>
 					<td class="text-center">
-						<button class="btn btn-primary btn-sm" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
+						<button class="btn btn-custom-primary btn-sm" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
 						<hr>
-						<button class="btn btn-danger btn-sm" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
+						<button class="btn btn-custom-danger btn-sm" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
 					</td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
-	<div class="row justify-content-center list-mobile gutter buffer-10" ng-repeat="item in list track by $index" ng-if="!emptyList && !item.remove">
-		<div class="container-fluid">
-			<div class="row">
-				<button type="button" class="btn-lg btn-block" ng-click="viewItem($index)" ng-class="{'btn-list-closed': item{{$index}}, 'btn-list-opened': !item{{$index}}}">
-					<div class="row">
-						<div class="col-10 text-left overflow">
-							{{item.item_name}}
-						</div>
-						<div class="col-2">
-							<span class="fa" ng-class="{'fa-angle-down': item{{$index}}, 'fa-angle-up': !item{{$index}}}"></span>
-						</div>
-					</div>	
-				</button>
-			</div>
-			<div class="row">
-				<div uib-collapse="item{{$index}}" class="width-100">
-					<div class="card list-card width-100">
-						<div class="card-body">
-    						<h5 class="card-title"><b>Notes:</b><button class="btn btn-primary btn-sm float-right" ng-click="updateItem(item)"><span class="far fa-edit"></span></button></h5>
-    						<p class="card-text" ng-if="item.item_notes != ''">&emsp;{{item.item_notes}}</p>
-    						<p class="card-text text-muted" ng-if="item.item_notes === ''">&emsp;~no notes~</p>
-    						<h5 class="card-title"><b>Visible To:</b></h5>
-    						<p class="card-text" ng-if="item.public">&emsp;All</p>
-    						<ul ng-if="!item.public && item.groupsAllowedExpanded.length > 0">
-								<li ng-repeat="group in item.groupsAllowedExpanded">{{group.prefix}}<span class="text-muted three-quarters-text">#{{group.suffix}}</span></li>
-							</ul>
-							<p class="card-text" ng-if="!item.public && item.groupsAllowedExpanded.length === 0">&emsp;None</p>
-							<h5 class="card-title"><b>Link:</b></h5>
-							<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">&emsp;Click Here<button class="btn btn-danger btn-sm float-right" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button></a>
-							<p class="text-muted" ng-if="item.link === ''">&emsp;~no link~<button class="btn btn-danger btn-sm float-right" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button></a>
-  						</div>
+	<div class="row justify-content-center list-mobile gutter buffer-10"  ng-if="!emptyList && !item.remove">
+		<uib-accordion>
+			<div uib-accordion-group class="spacing-10 panel-info" ng-repeat="item in list track by $index" is-open="isItemOpen[$index]" 
+					template-url="views/templates/list_template.html">
+				<uib-accordion-heading>
+        			<div class="font-weight-bold">{{item.item_name}} <i class="float-right fa" ng-class="{'fa-angle-right': !isItemOpen[$index], 'fa-angle-down fsu-gold': isItemOpen[$index]}"></i></div>
+      			</uib-accordion-heading>
+				<div class="card-body">
+					<div class="container-fluid">
+						<h5 class="card-title"><b>Notes:</b></h5>
 					</div>
-				</div>
-			</div>
-			
-		</div>
-		
+					<div class="container-fluid">
+						<p class="card-text" ng-if="item.item_notes != ''">{{item.item_notes}}</p>
+      					<p class="card-text text-muted" ng-if="item.item_notes === ''">~no notes~</p>
+					</div>      				
+      				<hr>
+      				<div class="container-fluid">
+      					<h5 class="card-title"><b>Visible To:</b></h5>
+      				</div>
+      				<div class="container-fluid">
+      					<p class="card-text" ng-if="item.public">All</p>
+      					<ul ng-if="!item.public && item.groupsAllowedExpanded.length > 0">
+      						<li ng-repeat="group in item.groupsAllowedExpanded">{{group.prefix}}<span class="text-muted three-quarters-text">#{{group.suffix}}</span></li>
+      					</ul>
+      					<p class="card-text" ng-if="!item.public && item.groupsAllowedExpanded.length === 0">None</p>
+      				</div>      				      			
+      				<hr>
+      				<div class="container-fluid">
+      					<h5 class="card-title"><b>Link:</b></h5>
+      				</div>
+      				<div class="container-fluid">
+      					<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">Click Here</a>
+      					<p class="text-muted" ng-if="item.link === ''">~no link~</p>
+      				</div>
+      				<hr>
+      				<div class="row justify-content-between">
+      					<div class="col-3 text-center">
+      						<button class="btn btn-custom-primary btn-sm" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
+      					</div>
+      					<div class="col-3 text-center">
+      						<button class="btn btn-danger btn-sm" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
+      					</div>
+      				</div>      				
+      			</div>
+    		</div>
+		</uib-accordion>
 	</div>
+	<div class="row buffer-50"></div>
 </div>

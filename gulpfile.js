@@ -8,7 +8,7 @@ let gulp = require('gulp'),
 
 gulp.task('default', ['views', 'css', 'all-images', 'bundle'], function () {
     gulp.watch(['app/css/import/*.css', 'app/js/*.js', 'app/js/**/*.js'], ['bundle']);
-    gulp.watch(['app/*.html', 'app/views/*.html', 'app/views/modals/*.html'], ['views']);
+    gulp.watch(['app/*.html', 'app/views/*.html', 'app/views/modals/*.html', 'app/views/templates/*.html'], ['views']);
     gulp.watch(['app/css/created/*.css'], ['css']);
     //gulp.watch(['app/images/*.*', 'app/images/*/*.*'], ['all-images']);
     gulp.watch(['app/images/*.*'], ['all-images']);
@@ -36,7 +36,9 @@ gulp.task('bundle', function () {
             },
             minify: true
         })
-        .bundle()
+        .bundle().on('error', function(e){
+            console.log(e);
+         })
         .pipe(source('bundle.js'))
         .pipe(gulp.dest('dist/js'))
 });
@@ -49,6 +51,9 @@ gulp.task('views', function() {
 
     gulp.src('app/views/modals/*.html')
         .pipe(gulp.dest('dist/views/modals/'));
+
+    gulp.src('app/views/templates/*.html')
+        .pipe(gulp.dest('dist/views/templates/'));
 });
 gulp.task('fonts', function() {
     return gulp.src('node_modules/font-awesome/fonts/*')

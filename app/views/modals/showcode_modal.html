@@ -1,0 +1,36 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title main-color-text">New Invite Created</h1>
+        <button type="button" class="close" aria-label="Close" ng-click="close()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <br>
+        <div class="row">
+            <div class="col-12 text-center">
+                <p>Send this code, along with the name of the group, to the person you wish to invite!</p>
+            </div>
+        </div> 
+        <br>
+        <div class="row">
+            <div class="col-10">
+                <p><b>Name:</b> {{name}}</p>
+                <p><b>Code:</b> {{code}}</p>
+            </div>
+            <div class="col-2 text-right">
+                <button class="btn btn-custom-warning-alt" ngclipboard data-clipboard-text="Name: {{name}}, Code: {{code}}" ng-click="alert()">
+                    <span class="fa fa-copy"></span>
+                </button>
+            </div>
+        </div>
+        <div class="row top-buffer-50">
+            <div class="col-12 text-center">
+                <p class="font-italic three-quarters-text"><span class="fas fa-info-circle"></span> Don't worry about forgetting this information, you can check for any open invites you might have with a group on their page</p>
+            </div>
+        </div>    
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-custom-success" ng-click="close()">Ok</button>
+    </div>
+</div>

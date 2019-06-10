@@ -1,0 +1,12 @@
+<div class="list-panel-heading btn-floater">
+    <h4 class="list-panel-title">
+        <a href tabindex="0" class="list-panel-header accordion-toggle" ng-click="toggleOpen()" uib-accordion-transclude="heading">
+            <span uib-accordion-header ng-class="{'text-muted': isDisabled}">
+                {{heading}}
+            </span>
+        </a>
+    </h4>
+</div>
+<div class="panel-collapse collapse" uib-collapse="!isOpen">
+    <div class="panel-body" ng-transclude style=""></div>
+</div>

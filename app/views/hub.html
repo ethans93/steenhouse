@@ -2,38 +2,35 @@
 	<div class="row top-buffer-75"></div>
 	<div class="row">
 		<div class="container-fluid">
-			<h1 class="display-4 main-color-text hub-title-border">{{hubName}}'s Hub</h1>
+			<h1 class="display-6 main-color-text hub-title-border"><span class="fab fa-hubspot">&nbsp;</span>Hub</h1>
 		</div>
 	</div>
-	<div class="row top-buffer-25">
-		<div class="col-lg-4 col-md-12 col-xs-12 text-center" >
-			<div class="card hub-card" ng-click="goToList()">
-				<span class="fa fa-gifts hub-card-icon"></span>
-				<div class="card-body hub-card-body">
-					<p class="card-text main-color-text"><b>My List</b></p>
-				</div>
+	<div class="row justify-content-center text-center">
+		<div class="col-lg-3 col-md-5 col-sm-6 col-6 top-buffer-25">
+			<div class="container-fluid" style="max-width: 400px">
+				<img class="img-fluid hub-image" src="images/hub-list-B-256.png" ng-click="goToList()">
 			</div>
 		</div>
-		<div class="col-lg-4 col-md-6 col-xs-12 text-center">
-			<div class="card hub-card" ng-click="goToGroups()">
-				<span class="fa fa-users hub-card-icon"></span>
-				<div class="card-body hub-card-body">
-					<p class="card-text main-color-text"><b>My Groups</b></p>
-				</div>
+		<div class="col-lg-3 col-md-5 col-sm-6 col-6 top-buffer-25">
+			<div class="container-fluid" style="max-width: 400px">
+				<img class="img-fluid hub-image" src="images/hub-groups-B-256.png" ng-click="goToGroups()">
 			</div>
 		</div>
-		<div class="col-lg-4 col-md-6 col-xs-12 text-center">
-			<div class="card hub-card" ng-click="createGroup()">
-				<span class="fa fa-user-tag hub-card-icon"></span>
-				<div class="card-body hub-card-body">
-					<p class="card-text main-color-text"><b>Create Group</b></p>
-				</div>
+		<div class="col-lg-3 col-md-5 col-sm-6 col-6 top-buffer-25">
+			<div class="container-fluid" style="max-width: 400px">
+				<img class="img-fluid hub-image" src="images/hub-join-B-256.png" ng-click="joinGroup()">
 			</div>
+		</div>
+		<div class="col-lg-3 col-md-5 col-sm-6 col-6 top-buffer-25">
+			<div class="container-fluid" style="max-width: 400px">
+				<img class="img-fluid hub-image" src="images/hub-create-B-256.png" ng-click="createGroup()">
+			</div>	
 		</div>
 	</div>
 	<div class="row top-buffer-50">
 		<div class="container">
 			<div ui-calendar ng-model="eventSources" class="hub-calendar"></div>
 		</div>
-	</div>  
+	</div>
+	<div class="row buffer-50"></div>  
 </div>

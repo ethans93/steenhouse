@@ -11,8 +11,8 @@
     <script src="js/bundle.js"></script>
     <link href="css/style.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
-    <link href='http://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
-    <link href='http://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Lato&subset=latin,latin-ext' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Oleo+Script' rel='stylesheet' type='text/css'>
     <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet'>
 </head>
 <body ng-controller='IndexCtrl'>
@@ -27,46 +27,39 @@
         </button>
         <div class="collapse navbar-collapse" id="index-menu">
             <div class="navbar-nav" id="index-menu-nav">
-                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/home'}" href="#!/home" ng-if="!isSignedIn()" ng-click="collapse()">Home</a>
-                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub'}" href="#!/hub" ng-if="isSignedIn()" ng-click="collapse()">Hub</a>
-                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub/mylist'}" href="#!/hub/mylist" ng-if="isSignedIn()" ng-click="collapse()">List</a>
-                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub/groups'}" href="#!/hub/groups" ng-if="isSignedIn()" ng-click="collapse()">Groups</a>
-                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub/odin'}" href="#!/hub/odin" ng-if="isSignedIn()" ng-click="collapse()">Odin</a>
-                <!-- <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/signup'}" href="#!/signup">Sign Up</a>
-                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/signin'}" href="" ng-click="signInModal()">Sign In</a> -->
-                <!-- <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/odin'}" href="#!/odin">Odin Slideshow</a> -->
-                <div class="dropdown-divider"></div>
-                <!-- <a class="nav-item nav-link mobile" ng-class="{'active' : currentPage === '/odin'}" href="#!/odin">Odin Slideshow</a> -->
-                <a class="nav-item nav-link mobile" ng-class="{'active' : currentPage === '/home/signup'}" href="#!/home/signup" ng-if="!isSignedIn()" ng-click="collapse()">Sign Up</a>
-                <a class="nav-item nav-link mobile" href="" ng-click="signInModal()" ng-if="!isSignedIn()">Sign In</a>
-                <a class="nav-item nav-link mobile" ng-class="{'active' : currentPage === '/hub/account'}" href="#!/hub" ng-if="isSignedIn()" ng-click="collapse()">Account</a>
-                <a class="nav-item nav-link mobile" href="" ng-click="signout()" ng-if="isSignedIn()">Sign Out</a>
+                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub'}" href="#!/hub" ng-if="isSignedIn()" ng-click="collapse()"><span class="fab fa-hubspot">&nbsp;</span>Hub</a>
+                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub/mylist'}" href="#!/hub/mylist" ng-if="isSignedIn()" ng-click="collapse()"><span class="fa fa-list-ul">&nbsp;</span>List</a>
+                <a class="nav-item nav-link" ng-class="{'active' : currentPage === '/hub/groups'}" href="#!/hub/groups" ng-if="isSignedIn()" ng-click="collapse()"><span class="fa fa-cubes">&nbsp;</span>Groups</a>
+                <a class="nav-item nav-link mobile top-buffer-10" href="" ng-click="signUpModal()" ng-if="!isSignedIn()"><span class="fa fa-user-plus">&nbsp;</span>Sign Up</a>
+                <a class="nav-item nav-link mobile" href="" ng-click="signInModal()" ng-if="!isSignedIn()"><span class="fa fa-sign-in-alt">&nbsp;</span>Sign In</a>
+                <div class="dropdown-divider" ng-if="isSignedIn()"></div>
+                <a class="nav-item nav-link mobile" ng-class="{'active' : currentPage === '/hub/profile'}" href="#!/hub/profile" ng-if="isSignedIn()" ng-click="collapse()"><span class="fa fa-user">&nbsp;</span>Profile</a>
+                <a class="nav-item nav-link mobile" href="" ng-click="signout()" ng-if="isSignedIn()"><span class="fa fa-sign-out-alt">&nbsp;</span>Sign Out</a>
             </div>
         </div>
-        <!-- <a class="nav-link my-2 my-sm-0 non-mobile" ng-class="{'active' : currentPage === '/odin'}" href="#!/odin">Odin Slideshow</a> -->
-        <a class="nav-link my-2 my-sm-0 non-mobile" ng-class="{'active' : currentPage === '/home/signup'}" href="#!/home/signup" ng-if="!isSignedIn()">Sign Up</a>
-        <a class="nav-link my-2 my-sm-0 non-mobile" href="" ng-click="signInModal()" ng-if="!isSignedIn()">Sign In</a>
-        <a class="nav-link my-2 my-sm-0 non-mobile" ng-class="{'active' : currentPage === '/hub/account'}" href="#!/hub" ng-if="isSignedIn()">Account</a>
-        <a class="nav-link my-2 my-sm-0 non-mobile" href="" ng-click="signout()" ng-if="isSignedIn()">Sign Out</a>
+        <a class="nav-link my-2 my-sm-0 non-mobile" href="" ng-click="signUpModal()" ng-if="!isSignedIn()"><span class="fa fa-user-plus">&nbsp;</span>Sign Up</a>
+        <a class="nav-link my-2 my-sm-0 non-mobile" href="" ng-click="signInModal()" ng-if="!isSignedIn()"><span class="fa fa-sign-in-alt">&nbsp;</span>Sign In</a>
+        <a class="nav-link my-2 my-sm-0 non-mobile" ng-class="{'active' : currentPage === '/hub/profile'}" href="#!/hub/profile" ng-if="isSignedIn()"><span class="fa fa-user">&nbsp;</span>Profile</a>
+        <a class="nav-link my-2 my-sm-0 non-mobile" href="" ng-click="signout()" ng-if="isSignedIn()"><span class="fa fa-sign-out-alt">&nbsp;</span>Sign Out</a>
     </nav>
     <div class="row" ng-init="updateAlerts()">
         <div class="container-fluid no-gutter" ng-view="" autoscroll="true" style="min-height: 80vh"></div>
     </div>
     <div uib-alert ng-repeat="alert in indexAlerts" class="index-alerts" ng-class="'alert-' + (alert.type || 'warning')" close="closeAlert($index)" dismiss-on-timeout="5000">{{alert.msg}}</div>
-    <div class="row align-items-end top-buffer-50 top-spacing-100 main-color-bg white-text" id="footer">
+    <div class="row align-items-end main-color-bg white-text top-buffer-50" id="footer">
         <div class="container-fluid">
             <div class="row text-center">
                 <div class="col-4 buffer-10"><a class="white-link" href="#!/home" ng-if="!isSignedIn()"><b>Home</b></a></div>
                 <div class="col-4 buffer-10"><a class="white-link" href="" ng-click="signInModal()" ng-if="!isSignedIn()"><b>Sign In</b></a></div>
-                <div class="col-4 buffer-10"><a class="white-link" href="#!/home/signup" ng-if="!isSignedIn()"><b>Sign Up</b></a></div>
-                <div class="col-sm-3 col-xs-6 buffer-10"><a class="white-link" href="#!/hub" ng-if="isSignedIn()"><b>Hub</b></a></div>
-                <div class="col-sm-3 col-xs-6 buffer-10"><a class="white-link" href="#!/hub/mylist" ng-if="isSignedIn()"><b>List</b></a></div>
-                <div class="col-sm-3 col-xs-6 buffer-10"><a class="white-link" href="#!/hub/groups" ng-if="isSignedIn()"><b>Groups</b></a></div>    
-                <div class="col-sm-3 col-xs-6 buffer-10"><a class="white-link" href="#!/hub/odin" ng-if="isSignedIn()"><b>Odin</b></a></div>
+                <div class="col-4 buffer-10"><a class="white-link" href="" ng-click="signUpModal()" ng-if="!isSignedIn()"><b>Sign Up</b></a></div>
+                <div class="col-4 buffer-10"><a class="white-link" href="#!/hub" ng-if="isSignedIn()"><b>Hub</b></a></div>
+                <div class="col-4 buffer-10"><a class="white-link" href="#!/hub/mylist" ng-if="isSignedIn()"><b>List</b></a></div>
+                <div class="col-4 buffer-10"><a class="white-link" href="#!/hub/groups" ng-if="isSignedIn()"><b>Groups</b></a></div>    
             </div>
-            <div class="row top-buffer-50 plain-text-family">
-                <div class="col-sm-6 col-xs-12 text-center"><small>Website Designed by Ethan Steen</small></div>
-                <div class="col-sm-6 col-xs-12 text-center"><small>ethanmcsteen.work@gmail.com, 703-943-0069</small></div>
+            <div class="row top-buffer-50 plain-text-family justify-content-around">
+                <div class="col-lg-4 col-md-6 col-12 text-center"><small>Icons designed by <a href="https://fontawesome.com/" target="_blank" class="white-link">FontAwesome</a></small></div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 text-center"><small>Website Designed by Ethan Steen</small></div>
+                <div class="col-lg-4 col-md-6 col-sm-6 col-12 text-center"><small>ethanmcsteen.work@gmail.com, 703-943-0069</small></div>
             </div>
         </div>
     </div>

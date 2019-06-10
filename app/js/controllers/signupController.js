@@ -4,7 +4,7 @@ let SignUpCtrl = function ($scope, $location, $window, SessionCtrl, ServerCtrl, 
     var formInputs = ['email', 'group', 'code'];
 	$scope.submit = function (newUser) {
         if ($scope.form.$valid) {
-            ServerCtrl.signup(newUser)
+            ServerCtrl.post('/signup', newUser)
             	.then(function (data) {
                 	if (data.result === 'success') {
                         SessionCtrl.signin(data.token);

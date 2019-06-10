@@ -2,7 +2,189 @@
 	<div class="row top-buffer-75"></div>
 	<div class="row">
 		<div class="container-fluid">
-			<h1 class="display-4 main-color-text hub-title-border">{{group.prefix}}</h1>
+			<h1 class="display-6 main-color-text hub-title-border" style="margin-bottom: 0px">
+				<a href="#!/hub" class="title-links hub-title-desk"><span class="fab fa-hubspot">&nbsp;</span>Hub</a>
+				<span class="fsu-gold hub-title-desk"> <span class="fa fa-angle-right"></span> </span>
+				<a href="#!/hub/groups" class="title-links hub-title-desk"><span class="fa fa-cubes">&nbsp;</span>My Groups</a>
+				<span class="fsu-gold hub-title-desk"> <span class="fa fa-angle-right"></span> </span>
+				<a href="#!/hub/groups" class="fsu-gold hub-title-mobile"> <span class="fa fa-angle-left"></span> </a>
+				<span class="fa fa-cube">&nbsp;</span>{{groupName.prefix}}<span class="groups-suffix">#{{groupName.suffix}}</span></h1>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-auto no-gutter mobile-flex" style="min-height: 90vh;">
+				<div class="horizontal-collapse" uib-collapse="isCollapsedHori" horizontal>
+					<div class="list-group group-list-group font-weight-bold" style="padding-right: 10px; padding-left: 10px">
+						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('wishlists', true)" ng-class="{'active' : groupView === 'wishlists'}">
+							Wishlists&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'wishlists'}"></span>
+						</a>
+						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('chatroom', true)" ng-class="{'active' : groupView === 'chatroom'}">
+							Chatroom&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'chatroom'}"></span>
+						</a>
+						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('gallery', true)" ng-class="{'active' : groupView === 'gallery'}">
+							Gallery&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'gallery'}"></span>
+						</a>
+						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('invites', true)" ng-class="{'active' : groupView === 'invites'}" ng-if="canInvite">
+							Invites&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'invites'}"></span>
+						</a>
+						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('admin', true)" ng-class="{'active' : groupView === 'admin'}" ng-if="isAdmin">
+							Admin&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'admin'}"></span>
+						</a>
+					</div>
+				</div>	
+			</div>
+			<div class="col-auto no-gutter mobile-flex">
+				<button class="" ng-click="isCollapsedHori = !isCollapsedHori" ng-class="{'btn-custom-hori-coll-closed': isCollapsedHori, 'btn-custom-hori-coll-opened': !isCollapsedHori}" style="width: 20px">
+					
+				</button>
+			</div>
+
+
+			<div class="col-auto non-mobile-flex" style="min-height: 90vh; border-right: 1px solid #18453B">
+				<div class="list-group group-list-group font-weight-bold">
+					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('wishlists', false)" ng-class="{'active' : groupView === 'wishlists'}">
+						Wishlists&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'wishlists'}"></span>
+					</a>
+					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('chatroom', false)" ng-class="{'active' : groupView === 'chatroom'}">
+						Chatroom&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'chatroom'}"></span>
+					</a>
+					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('gallery', false)" ng-class="{'active' : groupView === 'gallery'}">
+						Gallery&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'gallery'}"></span>
+					</a>
+					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('invites', false)" ng-class="{'active' : groupView === 'invites'}" ng-if="canInvite">
+						Invites&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'invites'}"></span>
+					</a>
+					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('admin', false)" ng-class="{'active' : groupView === 'admin'}" ng-if="isAdmin">
+						Admin&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'admin'}"></span>
+					</a>
+				</div>
+			</div>
+
+			<div class="col no-gutter" style="min-height: 90vh; overflow-y: scroll">
+				<div class="container-fluid" ng-if="groupView === 'wishlists' && isCollapsedHori" ng-init="loadWishlists()">
+					<uib-accordion ng-if="!userEmptyList">
+						<div uib-accordion-group class="spacing-10 panel-info" ng-repeat="person in lists track by $index" is-open="isPersonListClosed[$index]" 
+						template-url="views/templates/list_template.html">
+						<uib-accordion-heading>
+							<div class="font-weight-bold">{{person.first}} <i class="float-right fa" ng-class="{'fa-angle-right': !isPersonListClosed[$index], 'fa-angle-down fsu-gold': isPersonListClosed[$index]}"></i></div>
+						</uib-accordion-heading>
+						<div class="container-fluid text-center top-buffer-25" ng-if="person.emptyList">
+							<h3 class="text-muted">~their list is empty~</h3>
+						</div>
+						<div class="table-responsive" ng-if="!person.emptyList">
+							<table class="table table-striped">
+								<tbody>
+									<tr ng-repeat="item in person.list track by $index">
+										<th>
+											<div class="list-table-name">
+												{{item.item_name}}
+											</div>
+										</th>
+										<td>
+											<div class="list-table-notes">
+												<p ng-if="item.item_notes != ''">{{item.item_notes}}</p>
+												<p class="text-muted" ng-if="item.item_notes === ''">~no notes~</p>
+											</div>
+										</td>
+										<td>
+											<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">Click Here</a>
+											<p class="text-muted" ng-if="item.link === ''">~no link~</p>
+										</td>
+										<td class="text-center">
+											<button class="btn btn-custom-primary btn-sm" ng-click=""><span class="far fa-edit"></span></button>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</uib-accordion>
+				<div class="col-12 text-center top-buffer-25" ng-if="userEmptyList">
+					<h5 class="text-muted">~there is no one else in this group~</h5>
+				</div>
+			</div>
+
+			<div class="container-fluid construction-bg" ng-if="groupView === 'chatroom' && isCollapsedHori" ng-init="loadChatroom()">
+				<div class="row justify-content-center d-flex" style="height: 100%">
+					<div class="align-self-center">
+						<img class="img-fluid" src="images/under-construction.png" style="max-width: 200px">
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid top-buffer-25" ng-if="groupView === 'gallery' && isCollapsedHori" ng-init="loadGallery()" style="height: 100%">
+				<div class="row justify-content-between bottom-buffer-25">
+					<div class="col-6">
+						<div class="btn-group">
+        					<label class="btn btn-light btn-floater" ng-model="galleryType" uib-btn-radio="'gallery'" title="Gallery"><span class="fas fa-th"></span></label>
+        					<label class="btn btn-light btn-floater" ng-model="galleryType" uib-btn-radio="'slideshow'" title="Slideshow"><span class="fas fa-film"></span></label>
+    					</div>
+					</div>
+					<div class="col-6 text-right">
+						<button class="btn btn-custom-warning-alt btn-floater" ng-click="uploadImage()"><span class="fa fa-upload"></span> Upload</button>
+					</div>
+				</div>
+				<div class="row text-center" ng-if="noImages">
+					<div class="col-12 text-center">
+						<h5 style="color: rgba(24,69,37,0.5);">~the gallery is empty~</h5>
+					</div>
+				</div>
+				<div class="container-fluid" ng-if="galleryType === 'gallery'">
+					<div class="row justify-content-center bottom-buffer-25" ng-if="!noImages">
+						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colOne.length > 0">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colOne" ng-src="{{image.url}}" style="width: 100%">
+						</div>
+						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colTwo.length > 0">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colTwo" ng-src="{{image.url}}" style="width: 100%">
+						</div>
+						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colThree.length > 0">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colThree" ng-src="{{image.url}}" style="width: 100%">
+						</div>
+						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colFour.length > 0">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colFour" ng-src="{{image.url}}" style="width: 100%">
+						</div>
+					</div>
+				</div>
+				<div class="container-fluid text-center" style="height: 700px;" ng-if="galleryType === 'slideshow'">
+					<div uib-carousel active="active" interval="myInterval" no-wrap="noWrapSlides" ng-swipe-left="left()" ng-swipe-right="right()">
+				        <div uib-slide ng-repeat="image in images track by $index" index="$index">
+				          <img class="img-fluid" ng-src="{{image.url}}" style="max-height: 650px; max-width: 100%;">
+				        </div>
+				    </div>
+				</div>
+			</div>
+
+			<div class="container-fluid bottom-buffer-25" ng-if="groupView === 'invites' && isCollapsedHori" ng-init="loadInvites()" style="height: 100%;">
+				<div class="row">
+					<div class="col-12 text-center" style="padding-top: 10px; padding-bottom: 10px; border-bottom: 1px solid #184525; color: #184525;">
+						<h4 class="font-weight-bold font-italic" style="">Unused Codes for {{groupName.prefix}}#{{groupName.suffix}}</h4>
+					</div>
+				</div>
+				<div class="row top-buffer-25">
+					<div class="col-12 text-center">
+						<button class="btn btn-custom-info btn-floater" ng-click="generateCode()"><span class="fa fa-wrench"></span> Generate</button>
+					</div>
+				</div>
+				<div class="row text-center top-buffer-25" ng-repeat="rows in openInvites" ng-if="!noInvites">
+					<div class="col-6" ng-repeat="invite in rows">
+						<li class="font-weight-bold" style="color: #184525">{{invite.code}}</li>
+					</div>
+				</div>
+				<div class="row text-center top-buffer-25" ng-if="noInvites">
+					<div class="col-12 text-center">
+						<h5 style="color: rgba(24,69,37,0.5);">~no unused invites~</h5>
+					</div>
+				</div>
+			</div>
+
+			<div class="container-fluid construction-bg" ng-if="groupView === 'admin' && isCollapsedHori" ng-init="loadAdmin()">
+				<div class="row justify-content-center d-flex" style="height: 100%">
+					<div class="align-self-center">
+						<img class="img-fluid" ng-src="images/under-construction.png" style="max-width: 200px">
+					</div>
+				</div>
+			</div>
 		</div>
 	</div>
 </div>

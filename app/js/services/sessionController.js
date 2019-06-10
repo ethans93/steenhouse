@@ -1,6 +1,6 @@
 'use strict';
 
-let SessionCtrl = function ($injector, $window, ServerCtrl) {
+let SessionCtrl = function ($injector, $window) {
 	this.signin = function (token) {
         $window.sessionStorage.setItem('token', token);
     };
@@ -20,6 +20,9 @@ let SessionCtrl = function ($injector, $window, ServerCtrl) {
 
     var indexAlerts = [];
     this.pushAlerts = function(type, msg){
+        if(indexAlerts.length > 0){
+            indexAlerts.splice(0);
+        }
         indexAlerts.push({type: type, msg: msg})
     }
     this.getAlerts = function(){
@@ -27,6 +30,13 @@ let SessionCtrl = function ($injector, $window, ServerCtrl) {
     }
     this.spliceAlerts = function(index){
        indexAlerts.splice(index, 1);
+    }
+    this.chunkArray = function(arr, size){
+        var newArr = [];
+        for (var i=0; i<arr.length; i+=size) {
+            newArr.push(arr.slice(i, i+size));
+        }
+        return newArr;
     }
 };
 

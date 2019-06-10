@@ -2,94 +2,53 @@
 	<div class="row top-buffer-75"></div>
 	<div class="row">
 		<div class="container-fluid">
-			<h1 class="display-4 main-color-text hub-title-border">Groups</h1>
+			<h1 class="display-6 main-color-text hub-title-border">
+				<a href="#!/hub" class="title-links hub-title-desk"><span class="fab fa-hubspot">&nbsp;</span>Hub</a>
+				<span class="fsu-gold hub-title-desk"> <span class="fa fa-angle-right"></span> </span>
+				<a href="#!/hub" class="fsu-gold hub-title-mobile"> <span class="fa fa-angle-left"></span> </a><span class="fa fa-cubes">&nbsp;</span>My Groups
+			</h1>
 		</div>
 	</div>
-	<div class="row justify-content-end non-mobile-flex">
-		<div class="col-lg-8">
-			<table class="table">
-				<tbody>
-					<tr ng-repeat="group in groups track by $index">
-						<td class="width-100">
-							<div class="row">
-								<div class="col no-gutter groups-info" ng-click="goToGroup(group.url)">
-									<div class="container-fluid groups-header">
-										<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
-									</div>
-									<div class="container-fluid groups-text">
-										<p class="card-text"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
-									</div>
-								</div>
-								<div class="col-auto no-gutter text-center groups-btn" ng-click="leaveGroup(group.id)">
-									<span class="fa fa-sign-out-alt align-bottom"> Leave</span>
+	<div class="row justify-content-around">
+		<div class="col-lg-3 col-md-4 col-sm-5 col-6">
+			<button class="btn btn-block btn-custom-success" ng-click="createGroup()"><span class="fa fa-plus"></span> Create Group</button>
+		</div>
+		<div class="col-lg-3 col-md-4 col-sm-5 col-6">
+			<button class="btn btn-block btn-custom-primary" ng-click="joinGroup()"><span class="fa fa-sign-in-alt"></span> Join Group</button>
+		</div>
+	</div>
+	<hr>
+	<div class="row justify-content-center" style="min-height: 50vh">
+		<div class="col-lg-6 col-md-8 col-sm-10 col-12 no-gutter">
+			<div class="container-fluid" ng-repeat="group in groups track by $index" style="padding-top: 10px; padding-bottom: 10px;">
+				<div class="btn-group btn-group-lg" style="display: flex">
+					<button type="button" class="btn btn-custom-secondary-alt text-left" ng-click="goToGroup(group.url)" style="flex: 1"><h1 class="font-weight-bold">{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1></button>
+					<button type="button" class="btn btn-custom-main" ng-click="openGroup($index)">
+						<span class="fa" ng-class="{'fa-angle-down': !isGroupClosed[$index], 'fa-angle-right': isGroupClosed[$index]}"></span>
+						<span class="sr-only">Expand</span>
+					</button>
+				</div>
+				<div uib-collapse="isGroupClosed[$index]">
+					<div class="card">
+						<div class="card-body">
+							<div class="row justify-content-around mb-3">
+								<div class="col-12 text-center">
+									<p><b>Admin:</b> {{group.admin_name}} | <b># Members:</b> {{group.member_count}}</p>
 								</div>
 							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
-		<div class="col-lg-2">
-			<hr>
-			<button class="btn btn-block btn-outline-success" ng-click="createGroup()"><span class="fa fa-plus"></span> Create Group</button>
-			<hr>
-			<button class="btn btn-block btn-outline-info" ng-click="joinGroup()"><span class="fa fa-sign-in-alt"></span> Join Group</button>
-			<hr>
-		</div>
-	</div>
-	<div class="container-fluid no-gutter mobile">
-		<div class="row width-100 no-gutter">
-			<div class="col-md-6 col-sm-12 col-xs-12 text-center">
-				<button class="btn btn-block btn-success spacing-10" ng-click="createGroup()"><span class="fa fa-plus"></span> Create Group</button>
-			</div>
-			<div class="col-md-6 col-sm-12 col-xs-12 text-center">
-				<button class="btn btn-block btn-info spacing-10" ng-click="joinGroup()"><span class="fa fa-sign-in-alt"></span> Join Group</button>
-			</div>
-		</div>
-
-		<table class="table">
-				<tbody>
-					<tr ng-repeat="group in groups track by $index">
-						<td class="width-100">
-							<div class="row justify-content-center">
-								<div class="col-md-8 col no-gutter groups-info" ng-click="goToGroup(group.url)">
-									<div class="container-fluid groups-header">
-										<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
-									</div>
-									<div class="container-fluid groups-text">
-										<p class="card-text"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
-									</div>
+							<div class="row justify-content-around">
+								<div class="col-lg-4 col-md-6 col-8 mb-2" ng-if="!group.restrict || group.admin === userID">
+									<button class="btn btn-sm btn-block btn-custom-info" ng-click="generateCode(group.code)"><span class="fa fa-wrench"></span> Generate Code</button>
 								</div>
-								<div class="col-auto no-gutter text-center groups-btn" ng-click="leaveGroup(group.id)">
-									<span class="fa fa-sign-out-alt align-bottom"> Leave</span>
+								<div class="col-lg-4 col-md-6 col-8 mb-2">
+									<button class="btn btn-sm btn-block btn-custom-danger" ng-click="leaveGroup(group.id)"><span class="fa fa-sign-out-alt"></span> Leave Group</button>
 								</div>
 							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-
-
-
-
-
-	<!-- 	<div class="row width-100 no-gutter" ng-repeat="group in groups track by $index">
-			<div class="col" style="padding-right: 0px; margin-right: 0px">
-				<div class="card groups-card" ng-click="goToGroup(group)">
-					<div class="card-header groups-header">
-						<h1>{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1>
+						</div>
 					</div>
-					<div class="card-body">
-						<p class="card-text"><b>Members:</b> {{group.member_count}} | <b>Admin:</b> {{group.admin_name}}</p>
-					</div>
-
 				</div>
 			</div>
-			<div class="col-auto" style="padding-left: 0px; margin-left: 0px;">
-				<div class="card groups-btn-card text-center" style="">
-					<span class="fa fa-sign-out-alt"> Leave</span>
-				</div>
-			</div>
-		</div> -->
+		</div>
 	</div>
+	<div class="row buffer-50"></div>
 </div>

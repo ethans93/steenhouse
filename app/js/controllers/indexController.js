@@ -1,6 +1,6 @@
 'use strict';
 
-let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, SessionCtrl, ServerCtrl, ModalCtrls) {
+let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, $uibModal, SessionCtrl, ServerCtrl, ModalCtrls) {
 
     /*Closes navbar after selection*/
     $('#mainNav a').click(function () {
@@ -15,11 +15,10 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
     });
 
     $rootScope.$on('$routeChangeStart', (event, next, current) => {
-        ServerCtrl.authenticate({token: $window.sessionStorage.getItem('token')})
+        ServerCtrl.post('/authenticate', {token: $window.sessionStorage.getItem('token')})
             .then(function(data){
                 if(next.restrictions.restricted && !data.auth){
                     $location.path('/home');
-                    //SessionCtrl.pushAlerts(data.type, data.message);
                 }
                 if(!next.restrictions.restricted && data.auth){
                     $location.path(current.originalPath);
@@ -50,29 +49,29 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
         $location.path('/home');
     } 
 
-    // $(function () {
-    //     var lastScrollTop = 0;
-    //     var $navbar = $('.navbar');
-        
-    //     $(window).scroll(function(event){
-    //         if($(window).width() < 992){
-    //             var st = $(this).scrollTop();
-
-    //             if (st > lastScrollTop) { 
-    //                 $navbar.fadeOut();
-    //                 $scope.collapse();
-    //             } 
-    //             else {
-    //                 $navbar.fadeIn();
-    //             }
-    //             lastScrollTop = st;
-    //         }
-    //     });
-    // });
-
+    $scope.signUpModal = function(){
+        $scope.collapse();
+        $uibModal.open(ModalCtrls.signUp())
+            .result.then((res)=>{
+                if(res.success){
+                    SessionCtrl.pushAlerts(res.type, res.message);
+                }
+                else{
+                    $scope.signInModal()
+                }
+            })
+    }
     $scope.signInModal = function(){
         $scope.collapse();
-        ModalCtrls.signIn();
+        $uibModal.open(ModalCtrls.signIn())
+            .result.then((res)=>{
+                if(res.success){
+                    SessionCtrl.pushAlerts(res.type, res.message);
+                }
+                else{
+                    $scope.signUpModal()
+                }
+            })
     }
 
     $scope.indexAlerts = SessionCtrl.getAlerts();
@@ -81,6 +80,12 @@ let IndexCtrl = function ($rootScope, $scope, $location, $window, $route, Sessio
         SessionCtrl.spliceAlerts(index);
         $scope.indexAlerts = SessionCtrl.getAlerts();
     };
+
+    $scope.currentTime = function(){
+        var dt = new Date();
+        var time = dt.getHours() + ":" + dt.getMinutes();
+        return time;
+    }
 
 };
 

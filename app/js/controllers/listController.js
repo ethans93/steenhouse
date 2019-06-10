@@ -1,17 +1,15 @@
 'use strict';
 
-let ListCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, ModalCtrls, SessionCtrl) {
+let ListCtrl = function ($scope, $location, $window, $uibModal, $parse, ServerCtrl, ModalCtrls, SessionCtrl) {
 	$scope.listLoad = function(){
-		ServerCtrl.getList()
+		ServerCtrl.get('/getList')
 			.then(function(data){
 				if(data.result === 'success'){
 					if(data.list.length === 0){
 						$scope.emptyList = true;
 					}
 					else{
-						for(var i = 0; i < data.list.length; i++){
-							$scope['item' + i] = true;
-						}
+						$scope.isItemOpen = [];
 						$scope.emptyList = false;
 						$scope.list = data.list;
 						$scope.groups = data.groups;
@@ -22,6 +20,7 @@ let ListCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, Mod
 							$scope.groupsTrim.push({id: g.id, name: g.prefix})
 						})
 						$scope.list.forEach(function(item) {
+							$scope.isItemOpen.push(false);
 							item.groupsAllowedExpanded = [];
 							if(item.groups_allowed != null){
 								item.groups_allowed.forEach(function(obj) {
@@ -44,18 +43,17 @@ let ListCtrl = function ($rootScope, $scope, $location, $window, ServerCtrl, Mod
 		$scope['item' + index] = !$scope['item' + index];
 	}	
 	$scope.addItem = function(){
-		ModalCtrls.addItem($scope.groupsTrim, 'Add');
+		$uibModal.open(ModalCtrls.addItem($scope.groupsTrim, 'Add'))
+			.result.then(()=>{$scope.listLoad()})
 	}
 	$scope.removeItem = function(id){
-		ModalCtrls.removeItem(id)
+		$uibModal.open(ModalCtrls.removeItem(id))
+			.result.then(()=>{$scope.listLoad()})
 	}
 	$scope.updateItem = function(item){
-		ModalCtrls.updateItem(item, $scope.groupsTrim, 'Update');
+		$uibModal.open(ModalCtrls.updateItem(item, $scope.groupsTrim, 'Update'))
+			.result.then(()=>{$scope.listLoad()})
 	}
-	$rootScope.$on('refreshList', function() {
-		$scope.listLoad();
-	})
-
 };
 
 
