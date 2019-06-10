@@ -232,20 +232,20 @@ function mountUrlEndpoints(app) {
     })
 
     function cleanDir(){
-      fs.readdir('tmp/', (err, files) => {
+      fs.readdir('tmp_images/', (err, files) => {
         if(err){ 
           console.error(new Date() + "\nError reading dir, cleanDir\n" + err.stack + "\n");
           result.json({result: 'backend', type: 'info', message: 'Image uploaded'});
         }
         for (const file of files) {
-          fs.stat(path.join('tmp/', file), function(err, stat) {
+          fs.stat(path.join('tmp_images/', file), function(err, stat) {
             if(err){
               console.error(new Date() + "\nError getting " + file + " stats, cleanDir\n" + err + "\n");
             }
             var now = new Date().getTime();
             var endTime = new Date(stat.ctime).getTime() + 600000;
             if(now > endTime){
-              fs.unlink(path.join('tmp/', file), err => {
+              fs.unlink(path.join('tmp_images/', file), err => {
                 if(err){
                   console.error(new Date() + "\nError unlinking " + file + ", cleanDir\n" + err + "\n");
                 }

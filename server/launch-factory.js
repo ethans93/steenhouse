@@ -15,7 +15,7 @@ function setupMiddleware(app) {
     app.use(express.static(path.join(__dirname + '/../dist')));
     app.use(cors());
     app.use(multipart({
-        uploadDir: 'tmp/'
+        uploadDir: 'tmp_images/'
     }));
 
     const allowCrossDomain = function(req, res, next) {

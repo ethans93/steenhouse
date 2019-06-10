@@ -294,9 +294,7 @@ let ModalCtrls = function () {
                         SessionCtrl.pushAlerts(resp.data.type, resp.data.message)
                         $uibModalInstance.close(false);
                     }, function (evt) {
-
                         $scope.progressPercentage = parseInt(100.0 * evt.loaded / evt.total);
-                     
                     });
                  };
                 $scope.close = function(){

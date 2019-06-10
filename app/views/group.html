@@ -61,7 +61,7 @@
 				</div>
 			</div>
 
-			<div class="col no-gutter" style="min-height: 90vh; overflow-y: scroll">
+			<div class="col no-gutter" style="min-height: 90vh; overflow-y: auto;">
 				<div class="container-fluid" ng-if="groupView === 'wishlists' && isCollapsedHori" ng-init="loadWishlists()">
 					<uib-accordion ng-if="!userEmptyList">
 						<div uib-accordion-group class="spacing-10 panel-info" ng-repeat="person in lists track by $index" is-open="isPersonListClosed[$index]" 
