@@ -10,12 +10,12 @@
 				<a href="#!/hub/groups" class="fsu-gold hub-title-mobile"> <span class="fa fa-angle-left"></span> </a>
 				<span class="fa fa-cube">&nbsp;</span>{{groupName.prefix}}<span class="groups-suffix">#{{groupName.suffix}}</span></h1>
 			</div>
-		</div>
+	</div>
 
 		<div class="row">
-			<div class="col-auto no-gutter mobile-flex" style="min-height: 90vh;">
+			<div class="col-auto no-gutter mobile-flex" style="min-height: 90vh; background-color: #eeeeee;">
 				<div class="horizontal-collapse" uib-collapse="isCollapsedHori" horizontal>
-					<div class="list-group group-list-group font-weight-bold" style="padding-right: 10px; padding-left: 10px">
+					<div class="list-group group-list-group font-weight-bold" style="padding-right: 10px; padding-left: 10px;">
 						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('wishlists', true)" ng-class="{'active' : groupView === 'wishlists'}">
 							Wishlists&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'wishlists'}"></span>
 						</a>
@@ -24,6 +24,9 @@
 						</a>
 						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('gallery', true)" ng-class="{'active' : groupView === 'gallery'}">
 							Gallery&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'gallery'}"></span>
+						</a>
+						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('calendar', true)" ng-class="{'active' : groupView === 'calendar'}">
+							Calendar&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'calendar'}"></span>
 						</a>
 						<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('invites', true)" ng-class="{'active' : groupView === 'invites'}" ng-if="canInvite">
 							Invites&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'invites'}"></span>
@@ -34,10 +37,11 @@
 					</div>
 				</div>	
 			</div>
-			<div class="col-auto no-gutter mobile-flex">
-				<button class="" ng-click="isCollapsedHori = !isCollapsedHori" ng-class="{'btn-custom-hori-coll-closed': isCollapsedHori, 'btn-custom-hori-coll-opened': !isCollapsedHori}" style="width: 20px">
-					
-				</button>
+			<div class="col-auto no-gutter mobile-flex" style="margin-right: 20px; margin-top: 10px;">
+				<div class="col no-gutter" style="position: fixed;">
+					<button class="btn btn-custom-success btn-sm btn-floater" ng-click="isCollapsedHori = !isCollapsedHori"><span class="fa" ng-class="{'fa-angle-right' : isCollapsedHori, 'fa-angle-left' : !isCollapsedHori}" style="padding-top: 10px; padding-bottom: 10px"></span></button>
+				</div>
+				
 			</div>
 
 
@@ -52,6 +56,9 @@
 					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('gallery', false)" ng-class="{'active' : groupView === 'gallery'}">
 						Gallery&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'gallery'}"></span>
 					</a>
+					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('calendar', false)" ng-class="{'active' : groupView === 'calendar'}">
+							Calendar&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'calendar'}"></span>
+						</a>
 					<a href="" class="list-group-item list-group-item-action btn-floater" ng-click="changeView('invites', false)" ng-class="{'active' : groupView === 'invites'}" ng-if="canInvite">
 						Invites&emsp;<span class="fa fa-angle-right"></span><span class="fa" ng-class="{'fa-angle-right' : groupView === 'invites'}"></span>
 					</a>
@@ -72,31 +79,28 @@
 						<div class="container-fluid text-center top-buffer-25" ng-if="person.emptyList">
 							<h3 class="text-muted">~their list is empty~</h3>
 						</div>
-						<div class="table-responsive" ng-if="!person.emptyList">
-							<table class="table table-striped">
-								<tbody>
-									<tr ng-repeat="item in person.list track by $index">
-										<th>
-											<div class="list-table-name">
-												{{item.item_name}}
-											</div>
-										</th>
-										<td>
-											<div class="list-table-notes">
-												<p ng-if="item.item_notes != ''">{{item.item_notes}}</p>
-												<p class="text-muted" ng-if="item.item_notes === ''">~no notes~</p>
-											</div>
-										</td>
-										<td>
-											<a href="{{item.link}}" target="_blank" class="main-color-text" ng-if="item.link != ''">Click Here</a>
-											<p class="text-muted" ng-if="item.link === ''">~no link~</p>
-										</td>
-										<td class="text-center">
-											<button class="btn btn-custom-primary btn-sm" ng-click=""><span class="far fa-edit"></span></button>
-										</td>
-									</tr>
-								</tbody>
-							</table>
+						<div class="container-fluid top-buffer-25" >
+							<div class="row" ng-repeat="item in person.list track by $index" ng-class="{'grey-e-bg' : ($index % 2 != 0)}" style="padding-bottom: 10px; padding-top: 10px">
+								<div class="col-md-6 col-12">
+									<h5>{{item.item_name}}</h5>
+									<p ng-if="item.item_notes != ''">{{item.item_notes}}</p>
+									<p class="text-muted" ng-if="item.item_notes === ''">~no notes~</p>
+									<a href="{{item.link}}" target="_blank" ng-if="item.link != ''">Link</a>
+									<p class="text-muted" ng-if="item.link === ''">~no link~</p>
+								</div>
+								<div class="col-md-4 col-12">
+									<h5 ng-if="item.claim_id != 0">Claimed!</h5>
+									<h5 class="text-muted" ng-if="item.claim_id === 0">Unclaimed</h5>
+									<p ng-if="item.claim_id != 0">By: {{item.claim_name}}</p>
+									<p ng-if="item.claim_id != 0">{{item.occasion}} - {{item.occ_date_pretty}}</p>
+									
+								</div>
+								<div class="col-md-2 col-12">
+									<button class="btn btn-custom-warning-alt btn-floater" ng-if="item.claim_id === 0" ng-click="claimItem(item.id)"><span class="fas fa-flag"></span> Claim</button>
+									<button class="btn btn-custom-danger btn-floater" ng-if="item.claim_id != 0 && myClaim(item.claim_id)" ng-click="unclaimItem(item.id)"><span class="fas fa-unlink"></span> Unclaim</button>
+								</div>
+								
+							</div>
 						</div>
 					</div>
 				</uib-accordion>
@@ -152,6 +156,14 @@
 				          <img class="img-fluid" ng-src="{{image.url}}" style="max-height: 650px; max-width: 100%;">
 				        </div>
 				    </div>
+				</div>
+			</div>
+
+			<div class="container-fluid construction-bg" ng-if="groupView === 'calendar' && isCollapsedHori" ng-init="loadCalendar()">
+				<div class="row justify-content-center d-flex" style="height: 100%">
+					<div class="align-self-center">
+						<img class="img-fluid" src="images/under-construction.png" style="max-width: 200px">
+					</div>
 				</div>
 			</div>
 

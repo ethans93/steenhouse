@@ -1,0 +1,29 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">Claim Item</h1>
+        <button type="button" class="close" aria-label="Close" ng-click="close()">
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
+    </div>
+    <div class="modal-body">    
+        <form name="form" class="form-horizontal css-form" ng-submit="submit(claim)" ng-keyup="$event.keyCode == 13 && submit(claim)">
+            <div class="form-group">
+                <label for="occ" class="main-color-text"><span class="fas fa-birthday-cake"></span> For what occasion:</label>
+                <input required type="text" ng-model="claim.occ"  name="occ" id="occ" class="form-control" placeholder="Christmas" pattern="^(?=\s*\S).*[^#]$"  uib-tooltip="" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+            </div>
+            <div ng-show="form.$submitted || form.occ.$touched">
+                <p ng-show="!form.occ.$valid" class="input-form-warning">Occasion blank</p>
+            </div>
+             <div class="form-group">
+                <label for="date"><span class="fas fa-calendar-alt main-color-text"></span> When:</label>
+                <input  required type="text" ng-model="claim.date"  name="date" id="date" class="form-control" placeholder="12/25" pattern="^(?:((?:0[13578]|1[02])(\/)(?:31))|(?:(?:0[13-9]|1[0-2])(\/)(?:29|30)))$|^((02)(\/)(?:29))$|^(?:(?:0[1-9])|(?:1[0-2]))(\/)(?:0[1-9]|1\d|2[0-8])$" uib-tooltip="e.g. MM/DD" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+            </div>
+            <div ng-show="form.$submitted || form.date.$touched">
+                <p ng-show="!form.date.$valid" class="input-form-warning">Date invalid, check formatting</p>
+            </div>
+            <hr>
+            <button type="submit" class="btn btn-custom-success modal-btn btn-floater"><span class="fas fa-flag"></span> Claim</button>
+            <button type="button" class="btn btn-secondary modal-btn btn-floater" ng-click="close()"><span class="fa fa-times"></span> Cancel</button>        
+        </form>
+    </div>
+</div>

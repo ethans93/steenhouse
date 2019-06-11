@@ -436,7 +436,7 @@ function mountUrlEndpoints(app) {
       }
       pool.connect()
         .then(client => {
-          var queryString = 'INSERT INTO public.users_list(user_id, item_name, item_notes, link, public, groups_allowed, date_created) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)';
+          var queryString = 'INSERT INTO public.users_list(user_id, item_name, item_notes, link, public, groups_allowed, claim_id, date_created) VALUES ($1, $2, $3, $4, $5, $6, 0, CURRENT_TIMESTAMP)';
           client.query(queryString, [userID, item.name, item.notes, item.link, item.public, groupsAllowed])
             .then(res => {
               client.release();
@@ -725,8 +725,8 @@ function mountUrlEndpoints(app) {
       pool.connect()
         .then(client => {
           var queryStringPre = 'WITH _users AS (SELECT user_id FROM public.groups_users WHERE user_id != $1 AND group_id = $2 AND leave = false) '
-          var queryStringA = 'SELECT id, user_id, item_name, item_notes, link, public, groups_allowed, claim_id, occasion, occ_date, date_created FROM public.users_list WHERE user_id IN (SELECT user_id FROM _users);';
-          var queryStringB = 'SELECT id, name FROM public.users WHERE id IN (SELECT user_id FROM _users);'
+          var queryStringA = 'SELECT id, user_id, item_name, item_notes, link, public, groups_allowed, claim_id, occasion, occ_date, date_created FROM public.users_list WHERE user_id IN (SELECT user_id FROM _users) ORDER BY id ASC;';
+          var queryStringB = 'SELECT id, name FROM public.users WHERE id IN (SELECT user_id FROM _users) ORDER BY name ASC;'
           client.query((queryStringPre + queryStringA), [userID, groupID])
             .then(res => {
               var lists = res.rows;
@@ -750,7 +750,7 @@ function mountUrlEndpoints(app) {
                       }
                     })
                   })
-                  result.json({result: 'success', lists: members})
+                  result.json({result: 'success', lists: members, userID: userID})
                 })
                 .catch(err => {
                   client.release();
@@ -792,6 +792,75 @@ function mountUrlEndpoints(app) {
             .catch(err => {
               client.release();
               console.error(new Date() + "\nError connecting to database, getInvites\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+        .catch(err => {
+          console.error(new Date() + "\nError connecting to database\n" + err.stack + "\n");
+          result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+        })
+    })
+
+    app.post('/claimItem', function(request, result) {
+      var userID;
+      var itemID = request.body.itemID;
+      var occasion = request.body.claim.occ;
+      var claimDate = '2000-' + request.body.claim.date.replace('/', '-');
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({result: 'timeout', emit: 'refresh', type: 'info', message: 'Session timed out'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryString = 'UPDATE public.users_list SET claim_id = $1, occasion = $2, occ_date = $3 WHERE id = $4;';
+          client.query(queryString, [userID, occasion, claimDate, itemID])
+            .then(res => {
+              client.release();
+              result.json({result: 'success', type: 'info', message: 'Item claimed'})
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, claimItem\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+        .catch(err => {
+          console.error(new Date() + "\nError connecting to database\n" + err.stack + "\n");
+          result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+        })
+    })
+
+    app.post('/unclaimItem', function(request, result) {
+      var userID;
+      var itemID = request.body.itemID;
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({result: 'timeout', emit: 'refresh', type: 'info', message: 'Session timed out'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryString = 'SELECT unclaim_item($1, $2)';
+          client.query(queryString, [itemID, userID])
+            .then(res => {
+              client.release();
+              if(res.rows[0].unclaim_item){
+                result.json({result: 'success', type: 'info', message: 'Item unclaimed'})
+              }
+              else{
+                result.json({result: 'fail', type: 'warning', message: 'Failed to unclaim item, unauthorized'})
+              }
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, unclaimItem\n" + err.stack + "\n");
               result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
             })
         })

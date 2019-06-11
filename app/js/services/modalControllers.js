@@ -309,6 +309,53 @@ let ModalCtrls = function () {
             }
         }
     }
+
+    this.claimItem = function(itemID){
+        return{
+            templateUrl: '../views/modals/claimitem_modal.html',
+            backdrop: 'static',
+            controller: function($scope, $uibModalInstance, SessionCtrl, ServerCtrl){
+                $scope.submit = function(claim){
+                    if($scope.form.$valid){
+                        ServerCtrl.post('/claimItem', {itemID: itemID, claim: claim})
+                            .then(function(data) {
+                                SessionCtrl.pushAlerts(data.type, data.message)
+                                if(data.result === 'success'){
+                                    $uibModalInstance.close(true);
+                                }
+                            })
+                    }
+                }
+                $scope.close = function(){
+                    $uibModalInstance.dismiss();
+                }
+            }
+        }
+    }
+
+    this.unclaimItem = function(itemID){
+        return{
+            templateUrl: '../views/modals/unclaimitem_modal.html',
+            backdrop: 'static',
+            controller: function($scope, $uibModalInstance, SessionCtrl, ServerCtrl){
+                $scope.confirm = function(){
+                    ServerCtrl.post('/unclaimItem', {itemID: itemID})
+                        .then(function(data) {
+                            SessionCtrl.pushAlerts(data.type, data.message);
+                            if(data.result === 'success'){
+                                $uibModalInstance.close(true);
+                            }
+                            else{
+                                $uibModalInstance.close(false);   
+                            }
+                        })
+                }
+                $scope.close = function(){
+                    $uibModalInstance.dismiss();
+                }
+            }
+        }
+    }
 };
 
 module.exports = ModalCtrls;

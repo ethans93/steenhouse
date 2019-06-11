@@ -29,18 +29,70 @@ let GroupCtrl = function ($scope, $location, $window, $routeParams, $uibModal, S
 			.then(function(data) {
 				if(data.result === 'success'){
 					$scope.lists = data.lists;
+					$scope.userID = data.userID;
 					$scope.userEmptyList = (data.lists.length > 0 ? false : true);
 					$scope.personListClosed = [];
 					$scope.lists.forEach(function(person) {
 						person.first = person.name.split(" ", 1)[0];
 						person.emptyList = (person.list.length === 0 ? true : false);
 						$scope.personListClosed.push(true);
+						person.list.forEach(function(item) {
+							if(item.occ_date){
+								var dateArray = item.occ_date.split('-');
+								item.occ_date_pretty = dateArray[1] + '/' + dateArray[2].split('T')[0];
+							}
+							if(item.claim_id != 0){
+								item.claim_name = '';
+								for(var i = 0; i < $scope.lists.length; i++){
+									if($scope.lists[i].id === item.claim_id){
+										item.claim_name = $scope.lists[i].name.split(" ", 1)[0];
+										break;
+									}
+									else if($scope.userID === item.claim_id){
+										item.claim_name = 'Me';
+										break;
+									}
+									else{
+										item.claim_name = 'Another Group';
+									}
+								}
+							}
+						})
 					})
 				}
 				else{
 					SessionCtrl.pushAlerts(data.type, data.message);
 				}
 			})
+	}
+	$scope.claimItem = function(id){
+		$uibModal.open(ModalCtrls.claimItem(id))
+			.result.then((result)=> {
+				if(result){
+					$scope.loadWishlists()
+				}
+			})
+	}
+	$scope.unclaimItem = function(id){
+		$uibModal.open(ModalCtrls.unclaimItem(id))
+			.result.then((result)=> {
+				if(result){
+					$scope.loadWishlists()
+				}
+			})
+	}
+	$scope.myClaim = function(id){
+		return ($scope.userID === id)
+	}
+	$scope.whoClaim = function(id){
+		$scope.lists.forEach(function(person) {
+			if(person.id === id){
+				return person.first;
+			}
+			else{
+				return 'Another group'
+			}
+		})
 	}
 	$scope.loadChatroom = function(){
 		console.log('chatroom');

@@ -1093,6 +1093,10 @@ margin: auto;
   display: flex;
 }
 
+.grey-e-bg{
+  background-color: #eee;
+}
+
 @media(min-width: 992px){
   .non-mobile{
     display: inline;
