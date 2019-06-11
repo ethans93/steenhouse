@@ -1,9 +1,9 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text">Create Group</h1>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">Create Group</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
     </div>
     <div class="modal-body">    
         <form name="form" class="form-horizontal css-form" ng-submit="submit(group)" ng-keyup="$event.keyCode == 13 && submit(group)">
@@ -18,15 +18,15 @@
                 <label for="res" class="main-color-text">Should only you be allowed to send out invites?</label>     
             </div>
             <div class="btn-group">
-                <label class="btn btn-aff" ng-model="group.restrict" uib-btn-radio="true">Yes</label>
-                <label class="btn btn-aff" ng-model="group.restrict" uib-btn-radio="false">No</label>
+                <label class="btn btn-custom-primary btn-floater" ng-model="group.restrict" uib-btn-radio="true">Yes</label>
+                <label class="btn btn-custom-primary btn-floater" ng-model="group.restrict" uib-btn-radio="false">No</label>
             </div>
             <div ng-show="resNull">
                 <p class="input-form-warning">Please select an option</p>
             </div>
             <hr>
-            <button type="submit" class="btn btn-aff modal-btn">Create</button>
-            <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Cancel</button>        
+            <button type="submit" class="btn btn-custom-success modal-btn btn-floater"><span class="fas fa-tools"></span> Create</button>
+            <button type="button" class="btn btn-secondary modal-btn btn-floater" ng-click="close()"><span class="fa fa-times"></span> Cancel</button>        
         </form>
     </div>
 </div>

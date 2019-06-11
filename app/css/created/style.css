@@ -1059,10 +1059,11 @@ margin: auto;
 
 .hub-image{
   cursor: pointer;
-  transition: filter 0.3s;
+  border-radius: 50%;
+  transition: all 0.2s ease-in-out;
 }
 .hub-image:hover{
-  filter: grayscale(50%);
+  filter: grayscale(30%);
 }
 
 .construction-bg{

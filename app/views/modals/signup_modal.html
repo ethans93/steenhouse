@@ -1,15 +1,15 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text">Sign Up</h1>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">Sign Up</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
       </button>
     </div>
     <div class="modal-body">    
         <form name="form" class="form-horizontal css-form" ng-submit="submit(signup)" ng-keyup="$event.keyCode == 13 && submit(signup)">
             <div class="form-group">
                 <label for="email"><span class="fa fa-envelope main-color-text"></span> Email:</label>
-                <input required type="email" ng-model="signup.email"  name="email" id="email" class="form-control" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}"  uib-tooltip="e.g. example@domain.com" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <input required type="email" ng-model="signup.email"  name="email" id="email" class="form-control" placeholder="example@domain.com" pattern="[^@]+@[^@]+\.[a-zA-Z]{2,}"  uib-tooltip="e.g. example@domain.com" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.email.$touched">
                 <p ng-show="!form.email.$valid" class="input-form-warning">Email invalid</p>
@@ -29,16 +29,16 @@
                 <p ng-show="form.pwCon.$error.pwmatch" class="input-form-warning">Passwords do not match</p>
             </div>
             <div class="form-group">
-                <label for="name"><span class="fa fa-user main-color-text"></span> Name:</label>
-                <input  required type="text" ng-model="signup.name"  name="name" id="name" class="form-control" pattern="^[a-zA-Z\.\'\-]{1,50}(?: [a-zA-Z\.\'\-]{1,50})+$" uib-tooltip="First and last name, e.g. Jane Doe III" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <label for="name"><span class="fa fa-user main-color-text"></span> Full Name:</label>
+                <input  required type="text" ng-model="signup.name"  name="name" id="name" class="form-control" placeholder="John Doe" pattern="^[a-zA-Z\.\'\-]{1,50}(?: [a-zA-Z\.\'\-]{1,50})+$" uib-tooltip="First and last name, e.g. Jane Doe III" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.name.$touched">
-                <p ng-show="!form.name.$valid" class="input-form-warning">Name contains invalid character</p>
+                <p ng-show="!form.name.$valid" class="input-form-warning">Name is invalid</p>
             </div>
 
             <div class="form-group">
                 <label for="bday"><span class="fa fa-gift main-color-text"></span> Birthday:</label>
-                <input  required type="text" ng-model="signup.bday"  name="bday" id="bday" class="form-control" pattern="^(?:((?:0[13578]|1[02])(\/)(?:31))|(?:(?:0[13-9]|1[0-2])(\/)(?:29|30)))$|^((02)(\/)(?:29))$|^(?:(?:0[1-9])|(?:1[0-2]))(\/)(?:0[1-9]|1\d|2[0-8])$" uib-tooltip="e.g. 04/20 or MM/DD" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <input  required type="text" ng-model="signup.bday"  name="bday" id="bday" class="form-control" placeholder="06/09" pattern="^(?:((?:0[13578]|1[02])(\/)(?:31))|(?:(?:0[13-9]|1[0-2])(\/)(?:29|30)))$|^((02)(\/)(?:29))$|^(?:(?:0[1-9])|(?:1[0-2]))(\/)(?:0[1-9]|1\d|2[0-8])$" uib-tooltip="e.g. 04/20 or MM/DD" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.bday.$touched">
                 <p ng-show="!form.bday.$valid" class="input-form-warning">D.O.B. is invalid, check formatting</p>
@@ -46,7 +46,7 @@
 
             <div class="form-group">
                 <label for="group"><span class="fa fa-globe main-color-text"></span> Group:</label>
-                <input  required type="text" ng-model="signup.group"  name="group" id="group" class="form-control" pattern="^(.*\S.*)$" uib-tooltip="The name of the group that you were invited to, e.g.  &quot;Smith Family&quot;" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <input  required type="text" ng-model="signup.group"  name="group" id="group" class="form-control" placeholder="Doe Family#0" pattern="^(.*\S.*)$" uib-tooltip="The name of the group that you were invited to, e.g.  &quot;Smith Family&quot;" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.group.$touched">
                 <p ng-show="!form.group.$valid" class="input-form-warning">Group was left blank</p>
@@ -54,7 +54,7 @@
 
             <div class="form-group">
                 <label for="code"><span class="fa fa-key main-color-text"></span> Code:</label>
-                <input  required type="text" ng-model="signup.code"  name="code" id="code" class="form-control" pattern="^(.*\S.*)$" uib-tooltip="The code provided to you by the inviter" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <input  required type="text" ng-model="signup.code"  name="code" id="code" class="form-control" placeholder="AB12CD34EF" pattern="^(.*\S.*)$" uib-tooltip="The code provided to you by the inviter" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.code.$touched">
                 <p ng-show="!form.code.$valid" class="input-form-warning">Code was left blank</p>
@@ -67,8 +67,8 @@
                 </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-aff modal-btn">Sign Up</button>
-            <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Close</button>
+            <button type="submit" class="btn btn-custom-success btn-floater modal-btn"><span class="fa fa-sign-out-alt"></span> Sign Up</button>
+            <button type="button" class="btn btn-secondary btn-floater modal-btn" ng-click="close()"><span class="fas fa-times"></span> Close</button>
         </form>
     </div>
 </div>

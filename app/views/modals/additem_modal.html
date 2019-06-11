@@ -1,9 +1,9 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text">{{type}} Item</h1>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">{{type}} Item</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
     </div>
     <div class="modal-body">    
         <form name="form" class="form-horizontal css-form" ng-submit="submit(item)" ng-keyup="$event.keyCode == 13 && submit(item)">
@@ -32,8 +32,8 @@
                 <label for="public" class="main-color-text"><span class="fa fa-mask main-color-text"></span> Will this item be visible to all groups?</label>
             </div>
             <div class="btn-group">
-                <label class="btn btn-aff" ng-model="item.public" uib-btn-radio="true">Yes</label>
-                <label class="btn btn-aff" ng-model="item.public" uib-btn-radio="false">No</label>
+                <label class="btn btn-custom-primary btn-floater" ng-model="item.public" uib-btn-radio="true">Yes</label>
+                <label class="btn btn-custom-primary btn-floater" ng-model="item.public" uib-btn-radio="false">No</label>
             </div>
             <div ng-show="form.$submitted && item.public === null">
                 <p class="input-form-warning">Please select an option</p>
@@ -44,8 +44,8 @@
                 </select>
             </div>
             <hr>
-            <button type="submit" class="btn btn-aff modal-btn">{{type}}</button> 
-            <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Close</button>
+            <button type="submit" class="btn btn-custom-success modal-btn btn-floater"><span class="fa" ng-class="{'fa-plus' : type === 'Add', 'fa-edit' : type === 'Edit'}"></span> {{type}}</button> 
+            <button type="button" class="btn btn-secondary modal-btn btn-floater" ng-click="close()"><span class="fa fa-times"></span> Close</button>
         </form>
     </div>   
 </div>

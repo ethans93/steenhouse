@@ -436,7 +436,7 @@ function mountUrlEndpoints(app) {
       }
       pool.connect()
         .then(client => {
-          var queryString = 'INSERT INTO public.users_list(user_id, item_name, item_notes, link, public, groups_allowed, date_created) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP';
+          var queryString = 'INSERT INTO public.users_list(user_id, item_name, item_notes, link, public, groups_allowed, date_created) VALUES ($1, $2, $3, $4, $5, $6, CURRENT_TIMESTAMP)';
           client.query(queryString, [userID, item.name, item.notes, item.link, item.public, groupsAllowed])
             .then(res => {
               client.release();

@@ -11,19 +11,19 @@
 	</div>
 	<div class="row justify-content-around">
 		<div class="col-lg-3 col-md-4 col-sm-5 col-6">
-			<button class="btn btn-block btn-custom-success" ng-click="createGroup()"><span class="fa fa-plus"></span> Create Group</button>
+			<button class="btn btn-block btn-custom-success btn-floater" ng-click="createGroup()"><span class="fas fa-tools"></span> Create Group</button>
 		</div>
 		<div class="col-lg-3 col-md-4 col-sm-5 col-6">
-			<button class="btn btn-block btn-custom-primary" ng-click="joinGroup()"><span class="fa fa-sign-in-alt"></span> Join Group</button>
+			<button class="btn btn-block btn-custom-primary btn-floater" ng-click="joinGroup()"><span class="fas fa-door-open"></span> Join Group</button>
 		</div>
 	</div>
 	<hr>
 	<div class="row justify-content-center" style="min-height: 50vh">
 		<div class="col-lg-6 col-md-8 col-sm-10 col-12 no-gutter">
 			<div class="container-fluid" ng-repeat="group in groups track by $index" style="padding-top: 10px; padding-bottom: 10px;">
-				<div class="btn-group btn-group-lg" style="display: flex">
+				<div class="btn-group btn-group-lg btn-floater" style="display: flex">
 					<button type="button" class="btn btn-custom-secondary-alt text-left" ng-click="goToGroup(group.url)" style="flex: 1"><h1 class="font-weight-bold">{{group.prefix}}<span class="groups-suffix">#{{group.suffix}}</span></h1></button>
-					<button type="button" class="btn btn-custom-main" ng-click="openGroup($index)">
+					<button type="button" class="btn btn-custom-success" ng-click="openGroup($index)">
 						<span class="fa" ng-class="{'fa-angle-down': !isGroupClosed[$index], 'fa-angle-right': isGroupClosed[$index]}"></span>
 						<span class="sr-only">Expand</span>
 					</button>
@@ -38,10 +38,10 @@
 							</div>
 							<div class="row justify-content-around">
 								<div class="col-lg-4 col-md-6 col-8 mb-2" ng-if="!group.restrict || group.admin === userID">
-									<button class="btn btn-sm btn-block btn-custom-info" ng-click="generateCode(group.code)"><span class="fa fa-wrench"></span> Generate Code</button>
+									<button class="btn btn-sm btn-block btn-custom-info btn-floater" ng-click="generateCode(group.code)"><span class="fa fa-wrench"></span> Generate Code</button>
 								</div>
 								<div class="col-lg-4 col-md-6 col-8 mb-2">
-									<button class="btn btn-sm btn-block btn-custom-danger" ng-click="leaveGroup(group.id)"><span class="fa fa-sign-out-alt"></span> Leave Group</button>
+									<button class="btn btn-sm btn-block btn-custom-danger btn-floater" ng-click="leaveGroup(group.id)"><span class="fas fa-door-closed"></span> Leave Group</button>
 								</div>
 							</div>
 						</div>

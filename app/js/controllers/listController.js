@@ -5,6 +5,13 @@ let ListCtrl = function ($scope, $location, $window, $uibModal, $parse, ServerCt
 		ServerCtrl.get('/getList')
 			.then(function(data){
 				if(data.result === 'success'){
+					$scope.groups = data.groups;
+					$scope.groupsTrim = [];
+					$scope.groups.forEach(function(g) {
+						g.prefix = g.name.split('#')[0];
+						g.suffix = g.name.split('#')[1];
+						$scope.groupsTrim.push({id: g.id, name: g.prefix})
+					})
 					if(data.list.length === 0){
 						$scope.emptyList = true;
 					}
@@ -12,13 +19,6 @@ let ListCtrl = function ($scope, $location, $window, $uibModal, $parse, ServerCt
 						$scope.isItemOpen = [];
 						$scope.emptyList = false;
 						$scope.list = data.list;
-						$scope.groups = data.groups;
-						$scope.groupsTrim = [];
-						$scope.groups.forEach(function(g) {
-							g.prefix = g.name.split('#')[0];
-							g.suffix = g.name.split('#')[1];
-							$scope.groupsTrim.push({id: g.id, name: g.prefix})
-						})
 						$scope.list.forEach(function(item) {
 							$scope.isItemOpen.push(false);
 							item.groupsAllowedExpanded = [];
@@ -51,7 +51,7 @@ let ListCtrl = function ($scope, $location, $window, $uibModal, $parse, ServerCt
 			.result.then(()=>{$scope.listLoad()})
 	}
 	$scope.updateItem = function(item){
-		$uibModal.open(ModalCtrls.updateItem(item, $scope.groupsTrim, 'Update'))
+		$uibModal.open(ModalCtrls.updateItem(item, $scope.groupsTrim, 'Edit'))
 			.result.then(()=>{$scope.listLoad()})
 	}
 };

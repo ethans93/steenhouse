@@ -1,15 +1,15 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text">New Invite Created</h1>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">New Invite</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
     </div>
     <div class="modal-body">
         <br>
         <div class="row">
             <div class="col-12 text-center">
-                <p>Send this code, along with the name of the group, to the person you wish to invite!</p>
+                <p class="font-weight-bold">Send this code, along with the name of the group, to the person you wish to invite!</p>
             </div>
         </div> 
         <br>
@@ -19,7 +19,7 @@
                 <p><b>Code:</b> {{code}}</p>
             </div>
             <div class="col-2 text-right">
-                <button class="btn btn-custom-warning-alt" ngclipboard data-clipboard-text="Name: {{name}}, Code: {{code}}" ng-click="alert()">
+                <button class="btn btn-custom-warning-alt btn-floater" ngclipboard data-clipboard-text="Name: {{name}}, Code: {{code}}" ng-click="alert()">
                     <span class="fa fa-copy"></span>
                 </button>
             </div>
@@ -31,6 +31,6 @@
         </div>    
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-custom-success" ng-click="close()">Ok</button>
+        <button type="button" class="btn btn-custom-success btn-flaoter" ng-click="close()"><span class="fas fa-check"></span> Ok</button>
     </div>
 </div>

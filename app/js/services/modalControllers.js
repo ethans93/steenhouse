@@ -275,6 +275,7 @@ let ModalCtrls = function () {
             backdrop: 'static',
             controller: function($scope, $location, $uibModalInstance, SessionCtrl, ServerCtrl, Upload){
                 $scope.loadBarInvis = true;
+                $scope.progressPercentage = 0;
                 $scope.submit = function() {
                     if ($scope.form.file.$valid && $scope.file) {
                         $scope.loadBarInvis = false;
@@ -289,6 +290,11 @@ let ModalCtrls = function () {
                         SessionCtrl.pushAlerts(resp.data.type, resp.data.message)
                         if(resp.data.result === 'success'){
                             $uibModalInstance.close(true);
+                        }
+                        else{
+                            $scope.file = null;
+                            $scope.loadBarInvis = true;
+                            $scope.progressPercentage = 0;
                         }
                     }, function (resp) {
                         SessionCtrl.pushAlerts(resp.data.type, resp.data.message)

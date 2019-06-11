@@ -1,15 +1,15 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h5 class="modal-title">Delete Item</h5>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">Delete Item</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
     </div>
     <div class="modal-body">    
         <p>Are you sure you want to remove this item from your list?</p>
     </div>
     <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" ng-click="close()">Cancel</button>
-        <button type="button" class="btn btn-danger" ng-click="confirm()">Delete</button>
+        <button type="button" class="btn btn-secondary btn-floater" ng-click="close()"><span class="fas fa-times"></span> Cancel</button>
+        <button type="button" class="btn btn-custom-danger btn-floater" ng-click="confirm()"><span class="far fa-trash-alt"></span> Delete</button>
     </div>
 </div>

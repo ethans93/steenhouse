@@ -12,7 +12,7 @@
 	</div>
 	<div class="row justify-content-end gutter">
 		<div class="col-xs-1 text-center">
-			<button class="btn btn-lg btn-custom-success" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
+			<button class="btn btn-lg btn-custom-success btn-floater" ng-click="addItem()"><span class="fa fa-plus"></span> Add Item</button>
 		</div>
 	</div>
 	<div class="row top-buffer-50" ng-if="emptyList">
@@ -68,9 +68,9 @@
 						</div>
 					</td>
 					<td class="text-center">
-						<button class="btn btn-custom-primary btn-sm" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
+						<button class="btn btn-custom-primary btn-sm btn-floater" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
 						<hr>
-						<button class="btn btn-custom-danger btn-sm" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
+						<button class="btn btn-custom-danger btn-sm btn-floater" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
 					</td>
 				</tr>
 			</tbody>
@@ -113,10 +113,10 @@
       				<hr>
       				<div class="row justify-content-between">
       					<div class="col-3 text-center">
-      						<button class="btn btn-custom-primary btn-sm" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
+      						<button class="btn btn-custom-primary btn-sm btn-floater" ng-click="updateItem(item)"><span class="far fa-edit"></span></button>
       					</div>
       					<div class="col-3 text-center">
-      						<button class="btn btn-danger btn-sm" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
+      						<button class="btn btn-danger btn-sm btn-floater" ng-click="removeItem(item.id)"><span class="far fa-trash-alt"></span></button>
       					</div>
       				</div>      				
       			</div>

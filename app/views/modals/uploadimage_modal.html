@@ -1,9 +1,9 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text" id="exampleModalLabel">Upload Image</h1>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">Upload Image</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
     </div>
     <div class="modal-body">
         <form name="form" class="form-horizontal css-form" ng-submit="submit()" ng-keyup="$event.keyCode == 13 && submit()">
@@ -17,7 +17,7 @@
                 <p class="input-form-warning">Invalid file type, must be an image</p>
             </div>
             <div >
-            <uib-progressbar class="active" ng-class="{'d-none': loadBarInvis}" value="progressPercentage" type="success" striped="true">Uploading</uib-progressbar>
+            <uib-progressbar class="active" ng-class="{'d-none': loadBarInvis}" value="progressPercentage" type="success" striped="true"></uib-progressbar>
             </div>
             
             <hr>

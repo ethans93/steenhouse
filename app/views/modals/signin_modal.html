@@ -1,9 +1,9 @@
 <div class="modal-content">
     <div class="modal-header">
-        <h1 class="modal-title main-color-text" id="exampleModalLabel">Sign In</h1>
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">Sign In</h1>
         <button type="button" class="close" aria-label="Close" ng-click="close()">
-          <span aria-hidden="true">&times;</span>
-        </button>
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
     </div>
     <div class="modal-body">    
         <form name="form" class="form-horizontal css-form" ng-submit="submit(signin)" ng-keyup="$event.keyCode == 13 && submit(signin)">
@@ -29,8 +29,8 @@
                 </div>
             </div>
             <hr>
-            <button type="submit" class="btn btn-aff modal-btn">Sign In</button>
-            <button type="button" class="btn btn-secondary modal-btn" ng-click="close()">Close</button>       
+            <button type="submit" class="btn btn-custom-success modal-btn btn-floater"><span class="fa fa-sign-in-alt"></span> Sign In</button>
+            <button type="button" class="btn btn-secondary modal-btn btn-floater" ng-click="close()"><span class="fas fa-times"></span> Close</button>       
         </form>
     </div>
 </div>
