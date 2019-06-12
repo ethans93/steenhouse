@@ -48,7 +48,7 @@ app.controller("IndexCtrl", ["$rootScope", "$scope", "$location", "$window", "$r
 app.controller("HomeCtrl", ["$scope", "$location", "$window", "$uibModal", "SessionCtrl", "ServerCtrl", "ModalCtrls", HomeCtrl]);
 app.controller("HubCtrl", ["$scope", "$location", "$window", "$uibModal", "SessionCtrl", "ModalCtrls", HubCtrl]);
 app.controller("GroupsCtrl", ["$scope", "$location", "$window", "$uibModal", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupsCtrl]);
-app.controller("GroupCtrl", ["$scope", "$location", "$window", "$routeParams", "$uibModal", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupCtrl]);
+app.controller("GroupCtrl", ["$scope", "$location", "$window", "$route", "$routeParams", "$uibModal", "ServerCtrl", "ModalCtrls", "SessionCtrl", GroupCtrl]);
 app.controller("ListCtrl", ["$scope", "$location", "$window", "$uibModal", "$parse", "ServerCtrl", "ModalCtrls", "SessionCtrl", ListCtrl]);
 app.controller("ProfileCtrl", ["$scope", "$location", "$window", "$uibModal", "ServerCtrl", "SessionCtrl", "ModalCtrls", ProfileCtrl]);
 

@@ -9,7 +9,7 @@
         <form name="form" class="form-horizontal css-form" ng-submit="submit(group)" ng-keyup="$event.keyCode == 13 && submit(group)">
             <div class="form-group">
                 <label for="name" class="main-color-text"><span class="fa fa-tag"></span> Name:</label>
-                <input required type="text" ng-model="group.name"  name="name" id="name" class="form-control" pattern="^(?=\s*\S).*[^#]$"  uib-tooltip="Can be anything but may not contain the '#' character" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+                <input required type="text" ng-model="group.name" name="name" id="name" class="form-control" pattern="^(?=\s*\S).*[^#]$"  uib-tooltip="Can be anything but may not contain the '#' character" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
             </div>
             <div ng-show="form.$submitted || form.name.$touched">
                 <p ng-show="!form.name.$valid" class="input-form-warning">Name is invalid</p>
@@ -18,8 +18,8 @@
                 <label for="res" class="main-color-text">Should only you be allowed to send out invites?</label>     
             </div>
             <div class="btn-group">
-                <label class="btn btn-custom-primary btn-floater" ng-model="group.restrict" uib-btn-radio="true">Yes</label>
-                <label class="btn btn-custom-primary btn-floater" ng-model="group.restrict" uib-btn-radio="false">No</label>
+                <label class="btn btn-custom-success" ng-model="group.restrict" uib-btn-radio="true">Yes</label>
+                <label class="btn btn-custom-success" ng-model="group.restrict" uib-btn-radio="false">No</label>
             </div>
             <div ng-show="resNull">
                 <p class="input-form-warning">Please select an option</p>

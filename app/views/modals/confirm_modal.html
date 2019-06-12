@@ -1,0 +1,16 @@
+<div class="modal-content">
+    <div class="modal-header">
+        <h1 class="modal-title main-color-text font-italic font-weight-bold">{{title}}</h1>
+        <button type="button" class="close" aria-label="Close" ng-click="close()">
+          <span aria-hidden="true" class="fas fa-times main-color-text"></span>
+      </button>
+    </div>
+    <div class="modal-body">
+        <div class="col-12">
+            <p>{{message}}</p>
+        </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-custom-danger btn-flaoter" ng-click="close()"><span class="fas fa-times"></span> Cancel</button>
+        <button type="button" class="btn btn-custom-success btn-flaoter" ng-click="confirm()"><span class="{{icon}}"></span> {{button}}</button>
+    </div>
+</div>

@@ -160,26 +160,6 @@ function mountUrlEndpoints(app) {
         })
     })
 
-    app.get('/getOdinPics',function(request, result){
-      var files = []
-      nodedir.paths((__dirname + '/dist/images'), true, function(err, paths) {
-        try{
-          if (err) throw err;
-          paths.forEach(function(p){
-            var temp = p.split("\\");
-            if(temp[temp.length - 1].substring(0,3) === "IMG"){
-              files.push(temp[temp.length - 1]);
-            }
-          })
-          result.json({result: 'success', picArray: files});
-        }
-        catch(err){
-          console.error(new Date() + "\nError retrieving Odin pics\n" + err.stack + "\n");
-          result.status(500).json({result: 'critical', type: 'warning', message: 'We can\'t seem to find any pictures, try again later!'});
-        }
-      });   
-    })
-
     app.post('/uploadImage', function(request, result) {
       var data = _.pick(request.body.file, 'type')
       var file = request.files.file;
@@ -256,7 +236,6 @@ function mountUrlEndpoints(app) {
       });
     }    
 
-
     app.post('/retrieveImages', function(request, result) {
       var groupID = request.body.groupID;
       pool.connect()
@@ -273,7 +252,42 @@ function mountUrlEndpoints(app) {
             })
             .catch(err => {
               client.release();
-              console.error(new Date() + "\nError connecting to database, retrieveImages)\n" + err.stack + "\n");
+              console.error(new Date() + "\nError connecting to database, retrieveImages\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+            })
+        })
+        .catch(err => {
+          console.error(new Date() + "\nError connecting to database\n" + err.stack + "\n");
+          result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+        })
+    })
+
+    app.post('/removeImage', function(request, result) {
+      var groupID = request.body.groupID;
+      var imgKey = request.body.key;
+      var s3Key = process.env.BUCKET_KEY + groupID + '_' + imgKey;
+      pool.connect()
+        .then(client => {
+          var queryString = 'DELETE FROM public.groups_images WHERE key = $1;';
+          client.query(queryString, [imgKey])
+            .then(res => {
+              client.release();
+              var s3 = new AWS.S3();
+                  s3.deleteObject({
+                    Bucket: process.env.BUCKET,
+                    Key: s3Key
+                  },function (err, res) {
+                      cleanDir();
+                      if(err){s
+                        console.error(new Date() + "\nError uploading image, s3.deleteObject\n" + err + "\n");
+                        result.json({result: 'fail', type: 'danger', message: 'Image could not be removed, try again later'})
+                      }
+                      result.json({result: 'success', type: 'info', message: 'Image removed'})
+                  });
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, removeImages\n" + err.stack + "\n");
               result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
             })
         })
@@ -665,6 +679,7 @@ function mountUrlEndpoints(app) {
     app.post('/getGroup', function(request, result) {
      var userID;
      var groupID = request.body.groupID;
+     var name = request.body.groupName;
      try{
         var cookies = Cookie.parse(request.headers.cookie || '');
         var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
@@ -675,9 +690,9 @@ function mountUrlEndpoints(app) {
       }
       pool.connect()
         .then(client => {
-          var queryStringA = 'SELECT public.validate_group_visit($1, $2);';
-          var queryStringB = 'SELECT admin, restrict FROM public.groups WHERE id = $1'
-          client.query(queryStringA, [userID, groupID])
+          var queryStringA = 'SELECT public.validate_group_visit($1, $2, $3);';
+          var queryStringB = 'SELECT admin, restrict FROM public.groups WHERE id = $1;';
+          client.query(queryStringA, [userID, groupID, name])
             .then(res => {
               if(res.rows[0].validate_group_visit){
                 client.query(queryStringB, [groupID])
@@ -861,6 +876,129 @@ function mountUrlEndpoints(app) {
             .catch(err => {
               client.release();
               console.error(new Date() + "\nError connecting to database, unclaimItem\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+        .catch(err => {
+          console.error(new Date() + "\nError connecting to database\n" + err.stack + "\n");
+          result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+        })
+    })
+
+    app.post('/getAdmin', function(request, result){
+      var groupID = request.body.groupID;
+      var userID;
+      var group = [];
+      var members = [];
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({result: 'timeout', emit: 'refresh', type: 'info', message: 'Session timed out'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryStringA = 'SELECT name, member_count, date_created, admin, restrict FROM public.groups WHERE id = $1;';
+          var queryStringB = 'WITH _users AS (SELECT user_id FROM public.groups_users WHERE group_id = $1 AND leave = false) SELECT id, name FROM public.users WHERE id IN (SELECT user_id FROM _users) ORDER BY name ASC;';
+          client.query(queryStringA, [groupID])
+            .then(res => {
+              if(parseInt(userID) === res.rows[0].admin){
+                group = res.rows[0];
+                client.query(queryStringB, [groupID])
+                  .then(res => {
+                    client.release();
+                    members = res.rows;
+                    result.json({result: 'success', group: group, members: members})
+                  })
+                  .catch(err => {
+                    client.release();
+                    console.error(new Date() + "\nError connecting to database, getAdminB\n" + err.stack + "\n");
+                    result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
+                  })
+              }
+              else{
+                client.release();
+                console.error(new Date() + "\nUnauthorized admin view - GID - " + groupID + " UID - " + userID + "\n");
+                result.json({result: 'fail', type:'warning', message:'You shouldn\'t be seeing this section, try reloading the page'})
+              }
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, getAdminA\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+        .catch(err => {
+          console.error(new Date() + "\nError connecting to database\n" + err.stack + "\n");
+          result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+        })
+    })
+
+    app.post('/editGroup', function(request, result) {
+      var groupID = request.body.groupID;
+      var newName = request.body.new.name + '#' + groupID;
+      var newRestrict = request.body.new.restrict;
+      var userID;
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({result: 'timeout', emit: 'refresh', type: 'info', message: 'Session timed out'})
+      }
+      var newAdminID = (request.body.new.diffAdmin ? request.body.new.adminID : userID);
+      pool.connect()
+        .then(client => {
+          var queryString = 'UPDATE public.groups SET name=$1, admin=$2, restrict=$3 WHERE id=$4;';
+          client.query(queryString, [newName, newAdminID, newRestrict, groupID])
+            .then(res => {
+              client.release();
+              result.json({result: 'success', type: 'info', message: 'Group settings updated'})
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, editGroup\n" + err.stack + "\n");
+              result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
+            })
+        })
+        .catch(err => {
+          console.error(new Date() + "\nError connecting to database\n" + err.stack + "\n");
+          result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'The database is currently down. Try again later!'});
+        })
+    })
+
+    app.post('/kickMember', function(request, result) {
+      var memberID = request.body.member;
+      var groupID = request.body.group;
+      var userID;
+      try{
+        var cookies = Cookie.parse(request.headers.cookie || '');
+        var decodedCookie = jwt.verify(cookies.token, process.env.KEY);
+        userID = decodedCookie.userID;
+      }
+      catch(err){
+        result.json({result: 'timeout', emit: 'refresh', type: 'info', message: 'Session timed out'})
+      }
+      pool.connect()
+        .then(client => {
+          var queryString = 'SELECT kick_member($1, $2, $3);';
+          client.query(queryString, [groupID, userID, memberID])
+            .then(res => {
+              if(res.rows[0].kick_member){
+                client.release();
+                result.json({result: 'success', type: 'info', message: 'Member kicked from group'})
+              }
+              else{
+                client.release();
+                result.json({result: 'fail', type:'warning', message: 'You are not authorized to kick members from this group'})
+              }
+            })
+            .catch(err => {
+              client.release();
+              console.error(new Date() + "\nError connecting to database, kickMember (function)\n" + err.stack + "\n");
               result.status(500).json({result: 'critical', emit: '', type: 'danger', message: 'Error on our end, the database is currently down. Try again later!'});
             })
         })

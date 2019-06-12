@@ -430,8 +430,10 @@ margin: auto;
 
 .index-alerts{
   bottom: 50px;
+  left: 1%;
+  width: 98%;
   z-index: 2000; 
-  position:sticky;
+  position: fixed;
 }
 
 .carousel-control-next-icon{
@@ -643,6 +645,10 @@ margin: auto;
 .title-links:hover{
   color: #216358;
   text-decoration: none;
+}
+
+.input-form-error{
+  border: 1px solid red;
 }
 
 .btn-custom-main {

@@ -79,23 +79,23 @@
 						<div class="container-fluid text-center top-buffer-25" ng-if="person.emptyList">
 							<h3 class="text-muted">~their list is empty~</h3>
 						</div>
-						<div class="container-fluid top-buffer-25" >
+						<div class="container-fluid top-buffer-10" >
 							<div class="row" ng-repeat="item in person.list track by $index" ng-class="{'grey-e-bg' : ($index % 2 != 0)}" style="padding-bottom: 10px; padding-top: 10px">
-								<div class="col-md-6 col-12">
+								<div class="col-md-6 col-12 top-buffer-10">
 									<h5>{{item.item_name}}</h5>
 									<p ng-if="item.item_notes != ''">{{item.item_notes}}</p>
 									<p class="text-muted" ng-if="item.item_notes === ''">~no notes~</p>
 									<a href="{{item.link}}" target="_blank" ng-if="item.link != ''">Link</a>
 									<p class="text-muted" ng-if="item.link === ''">~no link~</p>
 								</div>
-								<div class="col-md-4 col-12">
+								<div class="col-md-4 col-12 top-buffer-10">
 									<h5 ng-if="item.claim_id != 0">Claimed!</h5>
 									<h5 class="text-muted" ng-if="item.claim_id === 0">Unclaimed</h5>
 									<p ng-if="item.claim_id != 0">By: {{item.claim_name}}</p>
 									<p ng-if="item.claim_id != 0">{{item.occasion}} - {{item.occ_date_pretty}}</p>
 									
 								</div>
-								<div class="col-md-2 col-12">
+								<div class="col-md-2 col-12 top-buffer-10">
 									<button class="btn btn-custom-warning-alt btn-floater" ng-if="item.claim_id === 0" ng-click="claimItem(item.id)"><span class="fas fa-flag"></span> Claim</button>
 									<button class="btn btn-custom-danger btn-floater" ng-if="item.claim_id != 0 && myClaim(item.claim_id)" ng-click="unclaimItem(item.id)"><span class="fas fa-unlink"></span> Unclaim</button>
 								</div>
@@ -117,7 +117,7 @@
 				</div>
 			</div>
 
-			<div class="container-fluid top-buffer-25" ng-if="groupView === 'gallery' && isCollapsedHori" ng-init="loadGallery()" style="height: 100%">
+			<div class="container-fluid top-buffer-25" ng-if="groupView === 'gallery' && isCollapsedHori" ng-init="loadGallery()">
 				<div class="row justify-content-between bottom-buffer-25">
 					<div class="col-6">
 						<div class="btn-group">
@@ -137,16 +137,16 @@
 				<div class="container-fluid" ng-if="galleryType === 'gallery'">
 					<div class="row justify-content-center bottom-buffer-25" ng-if="!noImages">
 						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colOne.length > 0">
-							<img class="img-fluid img-thumbnail" ng-repeat="image in colOne" ng-src="{{image.url}}" style="width: 100%">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colOne" ng-src="{{image.url}}" ng-click="removeImage($event, image.key)" style="width: 100%">
 						</div>
 						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colTwo.length > 0">
-							<img class="img-fluid img-thumbnail" ng-repeat="image in colTwo" ng-src="{{image.url}}" style="width: 100%">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colTwo" ng-src="{{image.url}}" ng-click="removeImage($event, image.key)" style="width: 100%">
 						</div>
 						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colThree.length > 0">
-							<img class="img-fluid img-thumbnail" ng-repeat="image in colThree" ng-src="{{image.url}}" style="width: 100%">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colThree" ng-src="{{image.url}}" ng-click="removeImage($event, image.key)" style="width: 100%">
 						</div>
 						<div class="col-lg-3 col-md-6 col-12 no-gutter" ng-if="colFour.length > 0">
-							<img class="img-fluid img-thumbnail" ng-repeat="image in colFour" ng-src="{{image.url}}" style="width: 100%">
+							<img class="img-fluid img-thumbnail" ng-repeat="image in colFour" ng-src="{{image.url}}" ng-click="removeImage($event, image.key)" style="width: 100%">
 						</div>
 					</div>
 				</div>
@@ -189,11 +189,93 @@
 					</div>
 				</div>
 			</div>
-
-			<div class="container-fluid construction-bg" ng-if="groupView === 'admin' && isCollapsedHori" ng-init="loadAdmin()">
-				<div class="row justify-content-center d-flex" style="height: 100%">
-					<div class="align-self-center">
-						<img class="img-fluid" ng-src="images/under-construction.png" style="max-width: 200px">
+			<div class="container-fluid top-buffer-25" ng-if="groupView === 'admin' && isCollapsedHori" ng-init="loadAdmin()">
+				<div class="row justify-content-center">
+					<div class="col-lg-8 col-md-10 col-12">
+						<h4 class="font-weight-bold font-italic">Tips</h4>
+						<hr>
+						<p><span class="far fa-question-circle"></span> Generate a code and share that along with the full group name (including the "#" and number) to invite others to your group</p>
+						<p><span class="far fa-question-circle"></span> To remove an image from a gallery Ctrl + LMB Click on the image</p>
+					</div>
+					<div class="col-lg-8 col-md-10 col-12 buffer-25">
+						<h4 class="font-weight-bold font-italic">Settings</h4>
+						<hr>
+						<div class="row" ng-if="!adminEdit">
+							<div class="col-12 text-right">
+								<button class="btn btn-custom-primary btn-floater btn-sm" ng-click="edit()"><span class="fa fa-edit"></span></button>
+							</div>
+							<div class="col-12 top-buffer-10">
+								<form>
+						  			<div class="form-group row">
+						    			<label for="staticGroupName" class="col-sm-2 col-form-label font-weight-bold">Name: </label>
+						    			<div class="col-sm-10">
+						      				<input type="text" readonly class="form-control-plaintext" id="staticGroupName" value="{{groupSettings.prefix}}">
+						    			</div>
+						  			</div>
+						  			<div class="form-group row">
+						    			<label for="staticGroupAdmin" class="col-sm-2 col-form-label font-weight-bold">Admin: </label>
+						    			<div class="col-sm-10">
+						      				<input type="text" class="form-control-plaintext" id="staticGroupAdmin" value="{{groupSettings.adminName}}">
+						    			</div>
+						  			</div>
+									<div class="form-group row">
+						    			<label for="staticGroupRestrict" class="col-sm-2 col-form-label font-weight-bold">Restrict Invites: </label>
+						    			<div class="col-sm-10">
+						      				<input type="text" class="form-control-plaintext" id="staticGroupRestrict" value="{{groupSettings.restrictSimple}}">
+						    			</div>
+						  			</div>
+								</form>
+							</div>
+						</div>
+						<div class="row" ng-if="adminEdit">
+							<div class="col-12">
+								<form name="formEdit" class="form-horizontal css-form" ng-submit="submitAdmin(groupNew)" ng-keyup="$event.keyCode == 13 && submitAdmin(groupNew)">
+									<div class="row">
+										<div class="col-12 text-right">
+											<button type="submit" class="btn btn-custom-success btn-floater btn-sm"><span class="fas fa-check"></span></button>
+											<button class="btn btn-custom-danger btn-floater btn-sm" ng-click="edit()" style="margin-left: 10px"><span class="fa fa-times"></span></button>
+										</div>
+									</div>
+						  			<div class="form-group row top-buffer-10">
+						    			<label for="groupNewName" class="col-sm-2 col-form-label font-weight-bold">Name: </label>
+						    			<div class="col-sm-10">
+						      				<input required type="text" ng-model="groupNew.name" name="groupNewName" id="groupNewName" class="form-control" pattern="^(?=\s*\S).*[^#]$"  uib-tooltip="" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+						      				<p class="three-quarters-text"><span class="fas fa-exclamation-circle"></span> May not contain the character "#"</p>
+						      			</div>
+						  			</div>
+						  			<div class="form-group row">
+						    			<label for="groupNewAdmin" class="col-sm-2 col-form-label font-weight-bold">Admin: </label>
+						    			<div class="col-sm-10">
+						      				<input required type="text" ng-model="groupNew.admin" name="groupNewAdmin" id="groupNewAdmin" class="form-control" pattern="^(?=\s*\S).*[^#]$"  uib-tooltip="" tooltip-placement="bottom-right" tooltip-trigger="'focus'" tooltip-class="custom-tooltip">
+						      				<p class="three-quarters-text"><span class="fas fa-exclamation-circle"></span> If changed, must match a name below</p>
+						      				<p class="input-form-warning" ng-if="!adminNameValid">Admin rights can only be transfered to someone in the group</p>
+						    			</div>
+						  			</div>
+									<div class="form-group row">
+						    			<label for="groupNewRestrict" class="col-sm-2 col-form-label font-weight-bold">Restrict Invites: </label>
+						    			<div class="col-sm-10">
+						      				<div class="btn-group">
+								                <label class="btn btn-custom-success" ng-model="groupNew.restrict" uib-btn-radio="true">Yes</label>
+								                <label class="btn btn-custom-success" ng-model="groupNew.restrict" uib-btn-radio="false">No</label>
+								            </div>
+						    			</div>
+						  			</div>
+						  			<p class="three-quarters-text"><span class="fas fa-exclamation-triangle"></span> Page will reload on submit</p>
+								</form>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-8 col-md-10 col-12 buffer-25">
+						<h4 class="font-weight-bold font-italic">Members</h4>
+						<hr>
+						<div class="row top-spacing-10" ng-repeat="person in membersAdmin track by $index" ng-if="groupSettings.admin != person.id">
+							<div class="col-sm-6 col-12">
+								<p>{{person.name}}</p>
+							</div>
+							<div class="col-sm-6 col-12 text-right">
+								<a href="" ng-click="kickMember(person.id)">Kick</a>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

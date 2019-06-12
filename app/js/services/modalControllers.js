@@ -356,6 +356,25 @@ let ModalCtrls = function () {
             }
         }
     }
+
+    this.confirm = function(title, message, icon, button){
+        return{
+            templateUrl: '../views/modals/confirm_modal.html',
+            backdrop: 'static',
+            controller: function($scope, $uibModalInstance){
+                $scope.title = title;
+                $scope.message = message;
+                $scope.icon = icon;
+                $scope.button = button;
+                $scope.confirm = function(){
+                    $uibModalInstance.close();
+                }
+                $scope.close = function(){
+                    $uibModalInstance.dismiss();
+                }
+            }
+        }
+    }
 };
 
 module.exports = ModalCtrls;
